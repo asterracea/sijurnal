@@ -6,16 +6,23 @@
   @vite('resources/css/app.css')
 </head>
 <body class="bg-white">
+    @if($errors->any())
+        <div>
+            <strong>{{ $errors->first('email') }}</strong>
+        </div>
+    @endif
+
     <section class="min-h-screen  flex box-border justify-center items-center">
         <div class="bg-gray-100 bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-md rounded-2xl flex max-w-3xl p-5 items-center">
             <div class="md:w-1/2 px-8">
                 <h2 class="font-bold text-3xl text-[#002D74]">Login</h2>
                 <p class="text-sm mt-4 text-[#002D74]">If you already a member, easily log in now.</p>
     
-                <form action="" class="flex flex-col gap-4">
-                    <input class="p-2 mt-8 rounded-xl border" type="email" name="email" placeholder="Email">
+                <form action="{{ route('login') }}" method="POST" class="flex flex-col gap-4">
+                    @csrf
+                    <input class="p-2 mt-8 rounded-xl border" type="email" id="email" name="email" placeholder="Email" required>
                     <div class="relative">
-                        <input class="p-2 rounded-xl border w-full" type="password" name="password" id="password" placeholder="Password">
+                        <input class="p-2 rounded-xl border w-full" type="password" name="password" id="password" placeholder="Password" required>
                     </div>
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center">
