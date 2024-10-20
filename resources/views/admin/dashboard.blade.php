@@ -1,6 +1,6 @@
-@extends('app')
+@extends('layouts.admin')
 
-@section('title', 'Dashboard')
+@section('title', 'SiJurnal Guru')
 
 @section('content')
 
