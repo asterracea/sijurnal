@@ -11,7 +11,7 @@ class AuthController extends Controller
     // Menampilkan form login
     public function showLoginForm()
     {
-        return view('auth.login');  // Buat view ini nanti
+        return view('login');  
     }
 
     // Proses login
@@ -20,6 +20,9 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email',  // Validasi input email
             'password' => 'required',     // Validasi input password
+        ],[
+            'email.required' => 'Email wajib diisi',
+            'password.required' => 'Password wajib diisi',
         ]);
 
         // Mengambil data email dari request
@@ -32,19 +35,33 @@ class AuthController extends Controller
         // Jika user ditemukan dan password cocok
         if ($user && Hash::check($password, $user->password)) {
             Auth::login($user);  // Login user ke sistem
-            return redirect()->intended('dashboard'); // Redirect ke halaman dashboard setelah login
+
+            // Pengalihan berdasarkan role pengguna
+            switch ($user->role) {
+                case 'superadmin':
+                    return redirect()->intended('/home'); // Superadmin dashboard
+                case 'admin':
+                    return redirect()->intended('/admin/dashboard'); // Admin dashboard
+                case 'guru':
+                    return redirect()->intended('/guru/home'); // Guru dashboard
+                case 'guru_piket':
+                    return redirect()->intended('/gurupiket/home'); // Guru Piket dashboard
+                default:
+                    // Jika role tidak terdaftar, redirect ke halaman default
+                    return redirect('/login')->with('error', 'Role tidak dikenali.');
+            }
         }
 
         // Jika gagal, kembalikan ke halaman login dengan error message
         return back()->withErrors([
             'email' => 'Email atau password salah.',
-        ]);
+        ])->withInput();
     }
 
     // Fungsi logout
     public function logout()
     {
         Auth::logout();
-        return redirect('/login');
+        return redirect('');
     }
 }

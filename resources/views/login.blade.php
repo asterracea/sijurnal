@@ -7,10 +7,13 @@
 </head>
 <body class="bg-white">
     @if($errors->any())
-        <div>
-            <strong>{{ $errors->first('email') }}</strong>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            @foreach ($errors->all() as $error)
+                <strong class="font-bold">{{ $error }}</strong><br>
+            @endforeach
         </div>
     @endif
+
 
     <section class="min-h-screen  flex box-border justify-center items-center">
         <div class="bg-gray-100 bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-md rounded-2xl flex max-w-3xl p-5 items-center">
@@ -20,7 +23,7 @@
     
                 <form action="{{ route('login') }}" method="POST" class="flex flex-col gap-4">
                     @csrf
-                    <input class="p-2 mt-8 rounded-xl border" type="email" id="email" name="email" placeholder="Email" required>
+                    <input class="p-2 mt-8 rounded-xl border" type="email" id="email" name="email" value="{{old('email')}}" placeholder="Email" required>
                     <div class="relative">
                         <input class="p-2 rounded-xl border w-full" type="password" name="password" id="password" placeholder="Password" required>
                     </div>

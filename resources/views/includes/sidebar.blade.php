@@ -11,19 +11,41 @@
     <div class="flex">
         <div class="w-64 min-h-screen bg-white text-gray-800 p-5">
             <div class="py-3 flex justify-center items-center">
-                <img src="{{ asset('build/assets/logo_gamaliel.png') }}" class="w-28 h-28" />
+                <img src="{{ asset('img/logo_gamaliel.png') }}" class="w-28 h-28" />
             </div>
             <div class="mt-4 flex flex-col">
                 <ul>
-                    <li class="p-3 rounded-md hover:bg-blue-500 ">
-                        <a href="{{ route('dashboard') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
-                    </li>
-                    <li class="p-3 rounded-md hover:bg-blue-500 ">
-                        <a href="{{ route('dataguru') }}" class="block text-md font-bold hover:text-white ">Data Guru</a>
-                    </li>
-                    <li class="p-3 rounded-md hover:bg-blue-500">
-                        <a href="{{ route('settings') }}" class="block text-md font-bold hover:text-white">Settings</a>
-                    </li>
+                    @if (auth()->user()->role === 'admin')
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('wellcome') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
+                        </li>
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('dataguru') }}" class="block text-md font-bold hover:text-white">Data Guru</a>
+                        </li>
+                    @endif
+
+                    <!-- Menu tambahan untuk role tertentu -->
+                    @if (auth()->user()->role === 'superadmin')
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('home') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
+                        </li>
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('settings') }}" class="block text-md font-bold hover:text-white">Manage System</a>
+                        </li>
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('settings') }}" class="block text-md font-bold hover:text-white">Setting</a>
+                        </li>  
+                    @endif
+                    @if (auth()->user()->role === 'guru')
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('guru/home') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
+                        </li>
+                    @endif
+                    @if (auth()->user()->role === 'guru_piket')
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('gurupiket/home') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>
