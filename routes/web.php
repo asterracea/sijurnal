@@ -8,6 +8,9 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\GuruPiketController;
+use App\Http\Controllers\FormJurnalController;
+use App\Http\Controllers\DataJadwalController;
+use App\Http\Controllers\FormJadwalController;
 Route::get('/', function () {
     return view('login');
 });
@@ -22,12 +25,17 @@ Route::middleware(['auth'])->group(function () {
     //admin
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('RoleMiddleware:admin')->name('wellcome');
     Route::get('/admin/dataguru', [AdminController::class, 'dataguru'])->middleware('RoleMiddleware:admin')->name('dataguru');
+    Route::get('/admin/datajadwal', [DataJadwalController::class, 'index'])->middleware('RoleMiddleware:admin')->name('datajadwal');
+    Route::get('/admin/formjadwal', [FormJadwalController::class, 'index'])->middleware('RoleMiddleware:admin')->name('formjadwal');
+    Route::post('/admin/formjadwal', [FormJadwalController::class, 'store'])->middleware('RoleMiddleware:admin')->name('formjadwal.store');
 
     //guru
     Route::get('/guru/home', [GuruController::class, 'index'])->middleware('RoleMiddleware:guru')->name('guru/home');
+    Route::get('/guru/formjurnal', [FormJurnalController::class, 'index'])->middleware('RoleMiddleware:guru')->name('formjurnal');
+
     //gurupiket
     Route::get('/gurupiket/home', [GuruPiketController::class, 'index'])->middleware('RoleMiddleware:guru_piket')->name('gurupiket/home');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); 
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
