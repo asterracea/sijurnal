@@ -24,7 +24,7 @@
             </div>
             <div>
                 <span class="block text-2xl font-bold">15</span>
-                <span class="block text-gray-500">Total Databases</span>
+                <span class="block text-gray-500">Rekap Data</span>
             </div>
         </div>
     </section>

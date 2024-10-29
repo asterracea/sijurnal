@@ -11,6 +11,8 @@ use App\Http\Controllers\GuruPiketController;
 use App\Http\Controllers\FormJurnalController;
 use App\Http\Controllers\DataJadwalController;
 use App\Http\Controllers\FormJadwalController;
+use App\Http\Controllers\AccUserController;
+use App\Http\Controllers\CreateDataGuruController;
 Route::get('/', function () {
     return view('login');
 });
@@ -28,6 +30,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/datajadwal', [DataJadwalController::class, 'index'])->middleware('RoleMiddleware:admin')->name('datajadwal');
     Route::get('/admin/formjadwal', [FormJadwalController::class, 'index'])->middleware('RoleMiddleware:admin')->name('formjadwal');
     Route::post('/admin/formjadwal', [FormJadwalController::class, 'store'])->middleware('RoleMiddleware:admin')->name('formjadwal.store');
+
+    Route::get('/admin/account_user', [AccUserController::class, 'index'])->name('account_user');
+    // Route::get('/admin/create_dataguru', [CreateDataGuruController::class, 'index'])->name('create_dataguru');
+    Route::get('/admin/create-dataguru', [CreateDataGuruController::class, 'create'])->name('create_dataguru');
+    Route::post('/admin/store-dataguru', [CreateDataGuruController::class, 'store'])->name('store_dataguru');
+    Route::get('/admin/dataguru', [CreateDataGuruController::class, 'index'])->name('dataguru');
 
     //guru
     Route::get('/guru/home', [GuruController::class, 'index'])->middleware('RoleMiddleware:guru')->name('guru/home');

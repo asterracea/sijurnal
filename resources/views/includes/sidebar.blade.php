@@ -23,7 +23,7 @@
                             <a href="{{ route('dataguru') }}" class="block text-md font-bold hover:text-white">Data Guru</a>
                         </li>
                         <li class="p-3 rounded-md hover:bg-blue-500">
-                            <a href="{{ route('datajadwal') }}" class="block text-md font-bold hover:text-white">Data Jadwal</a>
+                            <a href="{{ route('datajadwal') }}" class="block text-md font-bold hover:text-white">Data Mapel</a>
                         </li>
                     @endif
 

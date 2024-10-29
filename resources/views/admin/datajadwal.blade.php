@@ -8,7 +8,7 @@
     <div class="bg-white shadow-md rounded-xl overflow-hidden">
         <div class="flex justify-between items-center m-4">
             <div class="relative text-black font-bold text-xl w-auto">
-                <h1>Data Jadwal</h1>
+                <h1>Data Mapel</h1>
             </div>
             <a href="{{ route('formjadwal') }}" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
                 Create
