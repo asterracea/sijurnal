@@ -73,7 +73,7 @@
 <div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden justify-center items-center">
     <div class="bg-white rounded-lg w-1/3 p-5">
         <h2 class="text-xl font-bold mb-4">Edit Tahun dan Semester</h2>
-        <form id="edit-form" action="{{ route('tahun.update', ['id_tahun' => $item->id_tahun]) }}" method="POST">
+        <form id="edit-form" action="" method="POST">
             @csrf
             @method('PUT') <!-- Spoofing method -->
             <input type="hidden" name="id" id="edit-id"> <!-- This should be 'edit-id' -->
@@ -133,6 +133,10 @@
     document.getElementById('edit_tahun_ajaran').value = tahun_ajaran; // Set nilai tahun ajaran
     document.getElementById('edit_semester').value = semester; // Set nilai semester
     document.getElementById('edit-modal').classList.remove('hidden'); // Tampilkan modal edit
+
+    document.getElementById('edit-form').action = '/admin/tahun/' + id_tahun;
+
+    document.getElementById('edit-modal').classList.remove('hidden');
     }
 
     function openDeleteModal(id) {
