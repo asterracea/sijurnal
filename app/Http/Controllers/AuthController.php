@@ -11,6 +11,10 @@ class AuthController extends Controller
     // Menampilkan form login
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            return redirect()->back(); // Kembali ke halaman sebelumnya
+        }
+
         return view('login');  
     }
 
@@ -35,11 +39,16 @@ class AuthController extends Controller
         // Jika user ditemukan dan password cocok
         if ($user && Hash::check($password, $user->password)) {
             Auth::login($user);  // Login user ke sistem
+            $request->session()->regenerate(); // Regenerasi session untuk keamanan
+
+            // Simpan informasi pengguna ke dalam sesi
+            $request->session()->put('user_name', $user->name);
+            $request->session()->put('user_role', $user->role);
 
             // Pengalihan berdasarkan role pengguna
             switch ($user->role) {
                 case 'superadmin':
-                    return redirect()->intended('/home'); // Superadmin dashboard
+                    return redirect()->intended('/dashboard'); // Superadmin dashboard
                 case 'admin':
                     return redirect()->intended('/admin/dashboard'); // Admin dashboard
                 case 'guru':
@@ -59,9 +68,11 @@ class AuthController extends Controller
     }
 
     // Fungsi logout
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect('');
+        $request->session()->invalidate(); // Menghapus semua data sesi
+        $request->session()->regenerateToken(); // Regenerasi token CSRF
+        return redirect('/login');
     }
 }

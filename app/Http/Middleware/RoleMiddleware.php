@@ -22,12 +22,14 @@ class RoleMiddleware
         }
 
         // Cek apakah role pengguna sesuai
-        if (auth()->user()->role === $role) {
-            return $next($request);
+        if (Auth::user()->role !== $role) {
+            return redirect('/dashboard')->with('error', 'You do not have permission to access this page.');
         }
 
-        // Redirect ke URL sesuai role jika tidak sesuai
-        Auth::logout(); // Logout pengguna
-        return redirect('/login')->withErrors("Access denied due to invalid role.");
+        return $next($request);
+
+        // // Redirect ke URL sesuai role jika tidak sesuai
+        // Auth::logout(); // Logout pengguna
+        // return redirect('/login')->withErrors("Access denied due to invalid role.");
     }
 }

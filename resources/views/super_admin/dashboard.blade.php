@@ -5,8 +5,12 @@
 @section('content')
 <main class="p-6 sm:p-10 space-y-6">
     <h1 class="text-3xl font-bold">Dashboard Superadmin</h1>
-    <p>Selamat datang, ! Anda memiliki kontrol penuh atas sistem ini.</p>
-
+    <p>Selamat datang {{ session('user_name')}}, ! Anda memiliki kontrol penuh atas sistem ini.</p>
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <!-- Section khusus Superadmin -->
     <section class="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
         <div class="flex items-center p-8 bg-white shadow rounded-lg">

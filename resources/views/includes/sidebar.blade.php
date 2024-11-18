@@ -58,7 +58,7 @@
 
                     @if (auth()->user()->role === 'superadmin')
                         <li class="p-3 rounded-md hover:bg-blue-500">
-                            <a href="{{ route('home') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
+                            <a href="{{ route('dashboard') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
                         </li>
                         <li class="p-3 rounded-md hover:bg-blue-500">
                             <a href="{{ route('settings') }}" class="block text-md font-bold hover:text-white">Manage System</a>
