@@ -25,16 +25,22 @@ Route::middleware(['auth'])->group(function () {
     //admin
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('RoleMiddleware:admin')->name('wellcome');
     Route::get('/admin/dataguru', [AdminController::class, 'dataguru'])->middleware('RoleMiddleware:admin')->name('dataguru');
+
     Route::get('/admin/datajadwal', [CreateJadwalController::class, 'index'])->middleware('RoleMiddleware:admin')->name('datajadwal');
     Route::post('/admin/datajadwal', [CreateJadwalController::class, 'store'])->middleware('RoleMiddleware:admin')->name('datajadwal.store');
+    Route::put('/admin/datajadwal/{id_jadwal}', [CreateJadwalController::class, 'update'])->name('datajadwal.update');
+    Route::delete('/admin/datajadwal/{id_jadwal}', [CreateJadwalController::class, 'destroy'])->name('datajadwal.destroy');
+
     Route::get('/admin/tahun', [CreateTahunController::class, 'index'])->middleware('RoleMiddleware:admin')->name('tahun');
     Route::post('/admin/tahun', [CreateTahunController::class, 'store'])->middleware('RoleMiddleware:admin')->name('tahun.store');
     Route::put('/admin/tahun/{id_tahun}', [CreateTahunController::class, 'update'])->name('tahun.update');
     Route::delete('/admin/tahun/{id_tahun}', [CreateTahunController::class, 'destroy'])->name('tahun.destroy');
+
     Route::get('/admin/kelas', [CreateKelasController::class, 'index'])->middleware('RoleMiddleware:admin')->name('kelas');
     Route::post('/admin/kelas', [CreateKelasController::class, 'store'])->middleware('RoleMiddleware:admin')->name('kelas.store');
     Route::put('/admin/kelas/{id_kelas}', [CreateKelasController::class, 'update'])->name('kelas.update');
     Route::delete('/admin/kelas/{id_kelas}', [CreateKelasController::class, 'destroy'])->name('kelas.destroy');
+
     Route::get('/admin/mapel', [CreateMapelController::class, 'index'])->middleware('RoleMiddleware:admin')->name('mapel');
     Route::post('/admin/mapel', [CreateMapelController::class, 'store'])->middleware('RoleMiddleware:admin')->name('mapel.store');
     Route::put('/admin/mapel/{id_mapel}', [CreateMapelController::class, 'update'])->name('mapel.update');

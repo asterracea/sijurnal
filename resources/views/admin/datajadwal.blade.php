@@ -118,7 +118,7 @@
 <div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden justify-center items-center">
     <div class="bg-white rounded-lg w-1/3 p-5">
         <h2 class="text-xl font-bold mb-4">Edit Jadwal Pelajaran</h2>
-        <form id="edit-form" action="{{ route('datajadwal.update', ['id_jadwal' => $item->id_jadwa]) }}" method="POST">
+        <form id="edit-form" action="" method="POST">
             @csrf
             @method('PUT') <!-- Spoofing method -->
             <input type="hidden" name="id" id="edit-id">
@@ -187,10 +187,14 @@
     document.getElementById('edit_jam_mulai').value = jam_mulai;
     document.getElementById('edit_jam_selesai').value = jam_selesai;
     document.getElementById('edit-modal').classList.remove('hidden');
+
+    document.getElementById('edit-form').action = '/admin/datajadwal/' + id_tahun;
+
+    document.getElementById('edit-modal').classList.remove('hidden');
     }
 
     function openDeleteModal(id) {
-        document.getElementById('delete-form').action = '/admin/mapel/' + id;  // Set the form action
+        document.getElementById('delete-form').action = '/admin/datajadwal/' + id;  // Set the form action
         document.getElementById('delete-modal').classList.remove('hidden'); // Show the delete modal
     }
 
