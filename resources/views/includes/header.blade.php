@@ -8,7 +8,7 @@
     <title>Sistem Informasi Jurnal Guru</title>
 </head>
 <body>
-    <header class="bg-white p-4 shadow-md text-gray-500 rounded-xl ">
+    <header class="bg-white p-4 shadow-md text-gray-500 rounded-xl z-0 ">
         <div class="container mx-auto flex justify-between items-center">
             <div class="relative text-gray-500 focus-within:text-gray-900 w-auto">
                 <input type="text" id="default-search" class="block w-64 h-11 p-5 text-base font-normal text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Search">

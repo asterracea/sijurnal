@@ -6,6 +6,21 @@
     @vite('resources/css/app.css')
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sistem Informasi Jurnal Guru</title>
+    <style>
+        .submenu {
+            display: none;
+        }
+        .menu-item.active .submenu {
+            display: block;
+        }
+    </style>
+    <script>
+        function toggleSubmenu(event) {
+            event.preventDefault();
+            const menuItem = event.currentTarget.parentElement;
+            menuItem.classList.toggle('active');
+        }
+    </script>
 </head>
 <body>
     <div class="flex">
@@ -22,12 +37,25 @@
                         <li class="p-3 rounded-md hover:bg-blue-500">
                             <a href="{{ route('dataguru') }}" class="block text-md font-bold hover:text-white">Data Guru</a>
                         </li>
+                        <li class="p-3 rounded-md hover:bg-blue-500 menu-item">
+                            <a href="#" onclick="toggleSubmenu(event)" class="block text-md font-bold hover:text-white">Data Mapel</a>
+                            <ul class="submenu pl-4 mt-2">
+                                <li class="p-2 rounded-md hover:bg-blue-400">
+                                    <a href="{{ route('tahun') }}" class="block text-sm hover:text-white">Tahun Pelajaran</a>
+                                </li>
+                                <li class="p-2 rounded-md hover:bg-blue-400">
+                                    <a href="{{ route('kelas') }}" class="block text-sm hover:text-white">Kelas</a>
+                                </li>
+                                <li class="p-2 rounded-md hover:bg-blue-400">
+                                    <a href="{{ route('mapel') }}" class="block text-sm hover:text-white">Mata Pelajaran</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="p-3 rounded-md hover:bg-blue-500">
-                            <a href="{{ route('datajadwal') }}" class="block text-md font-bold hover:text-white">Data Mapel</a>
+                            <a href="{{ route('datajadwal') }}" class="block text-md font-bold hover:text-white">Jadwal Pelajaran</a>
                         </li>
                     @endif
 
-                    <!-- Menu tambahan untuk role tertentu -->
                     @if (auth()->user()->role === 'superadmin')
                         <li class="p-3 rounded-md hover:bg-blue-500">
                             <a href="{{ route('home') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
