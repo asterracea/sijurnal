@@ -35,12 +35,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/tahun/{id_tahun}', [CreateTahunController::class, 'destroy'])->name('tahun.destroy');
     Route::get('/admin/kelas', [CreateKelasController::class, 'index'])->middleware('RoleMiddleware:admin')->name('kelas');
     Route::post('/admin/kelas', [CreateKelasController::class, 'store'])->middleware('RoleMiddleware:admin')->name('kelas.store');
-    Route::put('/admin/kelas/{id}', [CreateKelasController::class, 'update'])->name('kelas.update');
-    Route::delete('/admin/kelas/{id}', [CreateKelasController::class, 'destroy'])->name('kelas.destroy');
+    Route::put('/admin/kelas/{id_kelas}', [CreateKelasController::class, 'update'])->name('kelas.update');
+    Route::delete('/admin/kelas/{id_kelas}', [CreateKelasController::class, 'destroy'])->name('kelas.destroy');
     Route::get('/admin/mapel', [CreateMapelController::class, 'index'])->middleware('RoleMiddleware:admin')->name('mapel');
     Route::post('/admin/mapel', [CreateMapelController::class, 'store'])->middleware('RoleMiddleware:admin')->name('mapel.store');
-    Route::put('/admin/mapel/{id}', [CreateMapelController::class, 'update'])->name('mapel.update');
-    Route::delete('/admin/mapel/{id}', [CreateMapelController::class, 'destroy'])->name('mapel.destroy');
+    Route::put('/admin/mapel/{id_mapel}', [CreateMapelController::class, 'update'])->name('mapel.update');
+    Route::delete('/admin/mapel/{id_mapel}', [CreateMapelController::class, 'destroy'])->name('mapel.destroy');
 
     Route::get('/admin/account_user', [AccUserController::class, 'index'])->name('account_user');
     // Route::get('/admin/create_dataguru', [CreateDataGuruController::class, 'index'])->name('create_dataguru');

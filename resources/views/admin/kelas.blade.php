@@ -64,14 +64,18 @@
 <div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden justify-center items-center">
     <div class="bg-white rounded-lg w-1/3 p-5">
         <h2 class="text-xl font-bold mb-4">Edit Kelas</h2>
-        <form id="edit-form" method="POST">
+        <form id="edit-form" action="{{ route('kelas.update', ['id_kelas' => $item->id_kelas]) }}" method="POST">
             @csrf
-            @method('PUT')
-            <input type="hidden" name="id" id="edit-id">
+            @method('PUT') <!-- Spoofing method -->
+            <input type="hidden" name="id" id="edit-id"> <!-- This should be 'edit-id' -->
+
+            <!-- Field Tahun Ajaran -->
             <div class="mb-4">
-                <label for="edit_nama_kelas" class="block text-sm font-semibold">Nama Kelas</label>
+                <label for="edit_nama_kelas" class="block text-sm font-semibold">Kelas</label>
                 <input type="text" name="nama_kelas" id="edit_nama_kelas" class="w-full px-3 py-2 border rounded" required>
             </div>
+
+            <!-- Tombol Submit -->
             <div class="flex justify-end space-x-4">
                 <button type="button" onclick="closeModal('edit-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
@@ -80,15 +84,20 @@
     </div>
 </div>
 
+
 <!-- Modal Hapus -->
 <div id="delete-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden justify-center items-center">
     <div class="bg-white rounded-lg w-1/3 p-5">
         <h2 class="text-xl font-bold mb-4">Konfirmasi Hapus</h2>
-        <p>Apakah Anda yakin ingin menghapus kelas?</p>
-        <div class="flex justify-end space-x-4">
-            <button type="button" onclick="closeModal('delete-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
-            <button id="confirm-delete" class="bg-red-500 text-white px-4 py-2 rounded">Hapus</button>
-        </div>
+        <p>Apakah Anda yakin ingin menghapus tahun ajaran ini?</p>
+        <form id="delete-form" action="" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="flex justify-end space-x-4">
+                <button type="button" onclick="closeModal('delete-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Hapus</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -102,26 +111,23 @@
         }
     });
 
-    function openEditModal(id, nama_kelas) {
-    document.getElementById('edit-id').value = id; // Set ID untuk edit
+    function openEditModal(id_kelas, nama_kelas) {
+    document.getElementById('edit-id').value = id_kelas; // Set ID untuk edit
     document.getElementById('edit_nama_kelas').value = nama_kelas;
     document.getElementById('edit-modal').classList.remove('hidden'); // Tampilkan modal edit
     }
 
     function openDeleteModal(id) {
-        document.getElementById('confirm-delete').onclick = function() {
-            document.getElementById('delete-form').action = '/admin/kelas/' + id;
-            document.getElementById('delete-form').submit();
-        };
-        document.getElementById('delete-modal').classList.remove('hidden');
+        document.getElementById('delete-form').action = '/admin/kelas/' + id;  // Set the form action
+        document.getElementById('delete-modal').classList.remove('hidden'); // Show the delete modal
     }
 
     function openModal() {
         document.getElementById('modal').classList.remove('hidden');
     }
 
-    function closeModal() {
-        document.getElementById('modal').classList.add('hidden');
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
     }
 </script>
 

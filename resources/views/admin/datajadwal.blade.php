@@ -115,13 +115,91 @@
     </div>
 </div>
 
+<div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden justify-center items-center">
+    <div class="bg-white rounded-lg w-1/3 p-5">
+        <h2 class="text-xl font-bold mb-4">Edit Jadwal Pelajaran</h2>
+        <form id="edit-form" action="{{ route('datajadwal.update', ['id_jadwal' => $item->id_jadwa]) }}" method="POST">
+            @csrf
+            @method('PUT') <!-- Spoofing method -->
+            <input type="hidden" name="id" id="edit-id">
+
+            <div class="mb-4">
+                <label for="edit_nip" class="block text-sm font-semibold">Nama Guru</label>
+                <input type="text" name="nip" id="edit_nip" class="w-full px-3 py-2 border rounded" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="edit_id_tahun" class="block text-sm font-semibold">Tahun Ajaran</label>
+                <input type="text" name="id_tahun" id="edit_id_tahun" class="w-full px-3 py-2 border rounded" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="edit_id_kelas" class="block text-sm font-semibold">Nama Kelas</label>
+                <input type="text" name="id_kelas" id="edit_id_kelas" class="w-full px-3 py-2 border rounded" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="edit_id_mapel" class="block text-sm font-semibold">Mata Pelajaran</label>
+                <input type="text" name="id_mapel" id="edit_id_mapel" class="w-full px-3 py-2 border rounded" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="edit_hari" class="block text-sm font-semibold">Hari</label>
+                <input type="text" name="hari" id="edit_hari" class="w-full px-3 py-2 border rounded" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="edit_jam_mulai" class="block text-sm font-semibold">Jam Mulai</label>
+                <input type="time" name="jam_mulai" id="edit_jam_mulai" class="w-full px-3 py-2 border rounded" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="edit_jam_selesai" class="block text-sm font-semibold">Jam Selesai</label>
+                <input type="time" name="jam_selesai" id="edit_jam_selesai" class="w-full px-3 py-2 border rounded" required>
+            </div>
+
+            <!-- Tombol Submit -->
+            <div class="flex justify-end space-x-4">
+                <button type="button" onclick="closeModal('edit-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const errorMessage = document.getElementById('error-message');
+        if (errorMessage) {
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+    });
+
+    function openEditModal(id_jadwal, id_tahun, nip, id_kelas, id_mapel, hari, jam_mulai, jam_selesai) {
+    document.getElementById('edit-id').value = id_jadwal;
+    document.getElementById('edit_id_tahun').value = id_tahun;
+    document.getElementById('edit_nip').value = nip;
+    document.getElementById('edit_id_kelas').value = id_kelas;
+    document.getElementById('edit_id_mapel').value = id_mapel;
+    document.getElementById('edit_hari').value = hari;
+    document.getElementById('edit_jam_mulai').value = jam_mulai;
+    document.getElementById('edit_jam_selesai').value = jam_selesai;
+    document.getElementById('edit-modal').classList.remove('hidden');
+    }
+
+    function openDeleteModal(id) {
+        document.getElementById('delete-form').action = '/admin/mapel/' + id;  // Set the form action
+        document.getElementById('delete-modal').classList.remove('hidden'); // Show the delete modal
+    }
+
     function openModal() {
         document.getElementById('modal').classList.remove('hidden');
     }
 
-    function closeModal() {
-        document.getElementById('modal').classList.add('hidden');
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
     }
 </script>
 

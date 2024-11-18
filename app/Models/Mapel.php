@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mapel extends Model
 {
-    protected $table = 'tb_mapel'; // Nama tabel yang sesuai dengan database
+    protected $table = 'tb_mapel';
     protected $fillable = ['nama_mapel'];
 
-    public $timestamps = false; // Menonaktifkan timestamps jika tidak diperlukan
+    public $timestamps = false;
+
+    public $incrementing = true;
+    protected $primaryKey = 'id_mapel';
 }

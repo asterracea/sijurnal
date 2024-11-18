@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kelas extends Model
 {
-    protected $table = 'tb_kelas'; // Nama tabel yang sesuai dengan database
+    protected $table = 'tb_kelas';
     protected $fillable = ['nama_kelas'];
 
-    public $timestamps = false; // Menonaktifkan timestamps
+    public $timestamps = false;
+
+    public $incrementing = true;
+    protected $primaryKey = 'id_kelas';
 }

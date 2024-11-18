@@ -38,5 +38,44 @@ class CreateKelasController extends Controller
     return redirect()->route('kelas')->with('success', 'Data berhasil disimpan.');
 }
 
+public function update(Request $request, $id_kelas)
+{
+    // Validate incoming data
+    $validatedData = $request->validate([
+        'nama_kelas' => 'required|string|max:45',
+    ]);
+
+    $kelas = Kelas::findOrFail($id_kelas);
+
+    $existingData = Kelas::where('nama_kelas', $validatedData['nama_kelas'])
+        ->where('id_kelas', '!=', $id_kelas)
+        ->first();
+
+    if ($existingData) {
+        // Jika data dengan tahun_ajaran dan semester yang sama sudah ada (kecuali yang sedang diupdate)
+        return redirect()->back()->withErrors(['error' => 'Data tahun ajaran dan semester yang sama sudah ada.']);
+    }
+
+    // Update the record with new values
+    $kelas->nama_kelas = $validatedData['nama_kelas'];
+
+    // Save the updated record
+    $kelas->save();
+
+    // Redirect or return response
+    return redirect()->route('kelas')->with('success', 'Kelas updated successfully');
+}
+
+public function destroy($id_kelas)
+{
+    // Find the record to delete
+    $tahun = Kelas::findOrFail($id_kelas);
+
+    // Delete the record
+    $tahun->delete();
+
+    // Redirect back with success message
+    return redirect()->route('kelas')->with('success', 'Kelas berhasil dihapus');
+}
 
 }

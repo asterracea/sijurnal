@@ -42,22 +42,49 @@ class CreateTahunController extends Controller
     return redirect()->route('tahun')->with('success', 'Data berhasil disimpan.');
 }
 
-public function update(Request $request, $id)
+public function update(Request $request, $id_tahun)
 {
-    $request->validate([
-        'tahun_ajaran' => 'required|string',
-        'semester' => 'required|in:Ganjil,Genap',
+    // Validate incoming data
+    $validatedData = $request->validate([
+        'tahun_ajaran' => 'required|string|max:255',
+        'semester' => 'required|string|in:Ganjil,Genap',
     ]);
 
-    $tahun = Tahun::findOrFail($id);
-    $tahun->update([
-        'tahun_ajaran' => $request->tahun_ajaran,
-        'semester' => $request->semester,
-    ]);
+    // Find the record to update
+    $tahun = Tahun::findOrFail($id_tahun);
 
-    return redirect()->route('tahun.index')->with('success', 'Tahun ajaran berhasil diperbarui!');
+    // Cek duplikasi data, kecuali pada data yang sedang diupdate
+    $existingData = Tahun::where('tahun_ajaran', $validatedData['tahun_ajaran'])
+        ->where('semester', $validatedData['semester'])
+        ->where('id_tahun', '!=', $id_tahun) // Mengecualikan record yang sedang diupdate
+        ->first();
+
+    if ($existingData) {
+        // Jika data dengan tahun_ajaran dan semester yang sama sudah ada (kecuali yang sedang diupdate)
+        return redirect()->back()->withErrors(['error' => 'Data tahun ajaran dan semester yang sama sudah ada.']);
+    }
+
+    // Update the record with new values
+    $tahun->tahun_ajaran = $validatedData['tahun_ajaran'];
+    $tahun->semester = $validatedData['semester'];
+
+    // Save the updated record
+    $tahun->save();
+
+    // Redirect or return response
+    return redirect()->route('tahun')->with('success', 'Tahun ajaran updated successfully');
 }
 
+public function destroy($id_tahun)
+{
+    // Find the record to delete
+    $tahun = Tahun::findOrFail($id_tahun);
 
+    // Delete the record
+    $tahun->delete();
+
+    // Redirect back with success message
+    return redirect()->route('tahun')->with('success', 'Tahun ajaran berhasil dihapus');
+}
 
 }

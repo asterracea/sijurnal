@@ -73,14 +73,18 @@
 <div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden justify-center items-center">
     <div class="bg-white rounded-lg w-1/3 p-5">
         <h2 class="text-xl font-bold mb-4">Edit Tahun dan Semester</h2>
-        <form id="edit-form" method="POST">
+        <form id="edit-form" action="{{ route('tahun.update', ['id_tahun' => $item->id_tahun]) }}" method="POST">
             @csrf
-            @method('PUT')
-            <input type="hidden" name="id" id="edit-id">
+            @method('PUT') <!-- Spoofing method -->
+            <input type="hidden" name="id" id="edit-id"> <!-- This should be 'edit-id' -->
+
+            <!-- Field Tahun Ajaran -->
             <div class="mb-4">
                 <label for="edit_tahun_ajaran" class="block text-sm font-semibold">Tahun Ajaran</label>
                 <input type="text" name="tahun_ajaran" id="edit_tahun_ajaran" class="w-full px-3 py-2 border rounded" required>
             </div>
+
+            <!-- Field Semester -->
             <div class="mb-4">
                 <label for="edit_semester" class="block text-sm font-semibold">Semester</label>
                 <select name="semester" id="edit_semester" class="w-full px-3 py-2 border rounded" required>
@@ -88,6 +92,8 @@
                     <option value="Genap">Genap</option>
                 </select>
             </div>
+
+            <!-- Tombol Submit -->
             <div class="flex justify-end space-x-4">
                 <button type="button" onclick="closeModal('edit-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
@@ -101,10 +107,14 @@
     <div class="bg-white rounded-lg w-1/3 p-5">
         <h2 class="text-xl font-bold mb-4">Konfirmasi Hapus</h2>
         <p>Apakah Anda yakin ingin menghapus tahun ajaran ini?</p>
-        <div class="flex justify-end space-x-4">
-            <button type="button" onclick="closeModal('delete-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
-            <button id="confirm-delete" class="bg-red-500 text-white px-4 py-2 rounded">Hapus</button>
-        </div>
+        <form id="delete-form" action="" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="flex justify-end space-x-4">
+                <button type="button" onclick="closeModal('delete-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Hapus</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -118,27 +128,24 @@
         }
     });
 
-    function openEditModal(id, tahun_ajaran, semester) {
-    document.getElementById('edit-id').value = id; // Set ID untuk edit
+    function openEditModal(id_tahun, tahun_ajaran, semester) {
+    document.getElementById('edit-id').value = id_tahun; // Set ID untuk edit
     document.getElementById('edit_tahun_ajaran').value = tahun_ajaran; // Set nilai tahun ajaran
     document.getElementById('edit_semester').value = semester; // Set nilai semester
     document.getElementById('edit-modal').classList.remove('hidden'); // Tampilkan modal edit
     }
 
     function openDeleteModal(id) {
-        document.getElementById('confirm-delete').onclick = function() {
-            document.getElementById('delete-form').action = '/admin/tahun/' + id;
-            document.getElementById('delete-form').submit();
-        };
-        document.getElementById('delete-modal').classList.remove('hidden');
+        document.getElementById('delete-form').action = '/admin/tahun/' + id;  // Set the form action
+        document.getElementById('delete-modal').classList.remove('hidden'); // Show the delete modal
     }
 
     function openModal() {
         document.getElementById('modal').classList.remove('hidden');
     }
 
-    function closeModal() {
-        document.getElementById('modal').classList.add('hidden');
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
     }
 </script>
 

@@ -3,7 +3,6 @@
 namespace App\Models;
 use App\Models\DataGuru;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Jadwal extends Model
@@ -41,5 +40,8 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Mapel::class, 'id_mapel', 'id_mapel');
     }
+
+    public $incrementing = true;
+    protected $primaryKey = 'id_jadwal';
 }
 
