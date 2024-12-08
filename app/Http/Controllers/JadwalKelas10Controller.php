@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Jadwal;
 use App\Models\Kelas;
@@ -26,9 +27,11 @@ class JadwalKelas10Controller extends Controller
         $tahun = Tahun::all();
         $kelas = Kelas::all();
         $mapel = Mapel::all();
+        $user = Auth::user();
+        $accountname = $user->profile;
 
         // Kirim data ke view
-        return view('admin.jadwalkelas10', compact('gurus', 'tahun', 'kelas', 'mapel', 'jadwal'));
+        return view('admin.jadwalkelas10', compact('gurus', 'tahun', 'kelas', 'mapel', 'jadwal','accountname'));
     }
 
 

@@ -123,6 +123,7 @@
                 @csrf
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <!-- Tanggal -->
+                    
                     <div class="mb-2">
                         <label for="tanggal" class="text-sm font-medium text-gray-700">Tanggal</label>
                         <input type="date" id="tanggal" name="tanggal" class="w-full p-2 border rounded-lg mt-1" required>
@@ -135,17 +136,7 @@
                         <label for="jam_selesai" class="text-sm font-medium text-gray-700">Jam Selesai</label>
                         <input type="text" id="jam_selesai" name="jam_selesai" class="w-full p-2 border rounded-lg mt-1" required>
                     </div>
-    
-                    <!-- Nama Guru -->
-                    {{-- <div class="mb-2">
-                        <label for="guru_id" class="text-sm font-medium text-gray-700">Nama Guru</label>
-                        <select id="guru_id" name="guru_id" class="w-full p-2 border rounded-lg mt-1" required>
-                            <option value="{{ $accountname->id }}">{{ $accountname->nama_guru }}</option>
-                        </select>
-                    </div> --}}
-    
-                    
-    
+
                     <!-- Rencana -->
                     <div class="mb-2">
                         <label for="rencana" class="text-sm font-medium text-gray-700">Rencana</label>
@@ -194,6 +185,18 @@
 
 </div>
 <script>
+    // Mengatur nilai input tanggal ke hari ini dan menampilkan dalam span
+    const tanggalInput = document.getElementById('tanggal');
+
+    // Menentukan tanggal saat ini dalam format YYYY-MM-DD
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Menambahkan leading zero jika bulan < 10
+    const day = String(today.getDate()).padStart(2, '0'); // Menambahkan leading zero jika hari < 10
+
+    // Format tanggal dalam bentuk YYYY-MM-DD
+    const formattedDate = `${year}-${month}-${day}`;
+
     // Ambil elemen modal dan tombol
     const modal = document.getElementById('modal');
     const openModalButton = document.getElementById('openModal');
