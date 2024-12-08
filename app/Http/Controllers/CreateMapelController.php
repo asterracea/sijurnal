@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Mapel;
 
@@ -9,8 +9,10 @@ class CreateMapelController extends Controller
 {
     public function index()
     {
-    $mapel = Mapel::all(); // Mengambil semua data tanpa relasi
-    return view('admin.mapel', compact('mapel'));
+        $user = Auth::user();
+        $accountname = $user->profile; 
+        $mapel = Mapel::all(); // Mengambil semua data tanpa relasi
+        return view('admin.mapel', compact('mapel','accountname'));
     }
 
 

@@ -13,4 +13,15 @@ class Kelas extends Model
 
     public $incrementing = true;
     protected $primaryKey = 'id_kelas';
+
+    public function jadwalPelajaran()
+    {
+        return $this->hasMany(Jadwal::class, 'id_kelas');
+    }
+
+    // public function jurnal()
+    // {
+    //     return $this->hasMany(Jurnal::class, 'id_kelas');
+    // }
 }
+    

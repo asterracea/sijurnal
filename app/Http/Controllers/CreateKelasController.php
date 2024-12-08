@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 
@@ -10,7 +10,9 @@ class CreateKelasController extends Controller
     public function index()
     {
     $kelas = Kelas::all(); // Mengambil semua data tanpa relasi
-    return view('admin.kelas', compact('kelas'));
+    $user = Auth::user();
+    $accountname = $user->profile; 
+    return view('admin.kelas', compact('kelas','accountname'));
     }
 
 

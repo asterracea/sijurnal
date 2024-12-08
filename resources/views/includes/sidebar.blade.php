@@ -54,6 +54,9 @@
                         <li class="p-3 rounded-md hover:bg-blue-500">
                             <a href="{{ route('datajadwal') }}" class="block text-md font-bold hover:text-white">Jadwal Pelajaran</a>
                         </li>
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('datajurnal') }}" class="block text-md font-bold hover:text-white">Jurnal</a>
+                        </li>
                     @endif
 
                     @if (auth()->user()->role === 'superadmin')
@@ -70,6 +73,9 @@
                     @if (auth()->user()->role === 'guru')
                         <li class="p-3 rounded-md hover:bg-blue-500">
                             <a href="{{ route('guru/home') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
+                        </li>
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('guru/jurnal') }}" class="block text-md font-bold hover:text-white">Jurnal</a>
                         </li>
                     @endif
                     @if (auth()->user()->role === 'guru_piket')

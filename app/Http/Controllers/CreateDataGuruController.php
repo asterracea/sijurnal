@@ -1,17 +1,20 @@
 <?php
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Dataguru;
+use App\Models\User;
 
 class CreateDataGuruController extends Controller
 {
 
     public function index()
-{
-    $dataguru = Dataguru::all(); // Mengambil semua data guru
-    return view('admin.dataguru', compact('dataguru')); // Mengirim data ke view
-}
+    {
+        $dataguru = Dataguru::all(); // Mengambil semua data guru
+        $user = Auth::user();
+        $accountname = $user->profile; 
+        return view('admin.dataguru', compact('dataguru','accountname')); // Mengirim data ke view
+    }
     // Menampilkan form
     public function create()
     {

@@ -13,4 +13,5 @@ class Tahun extends Model
 
     public $incrementing = true;
     protected $primaryKey = 'id_tahun';
+    
 }

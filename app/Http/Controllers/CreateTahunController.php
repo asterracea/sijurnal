@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Tahun;
 
@@ -9,8 +9,10 @@ class CreateTahunController extends Controller
 {
     public function index()
     {
-    $tahun = Tahun::all(); // Mengambil semua data tanpa relasi
-    return view('admin.tahun', compact('tahun'));
+        $user = Auth::user();
+        $accountname = $user->profile; 
+        $tahun = Tahun::all(); // Mengambil semua data tanpa relasi
+        return view('admin.tahun', compact('tahun','accountname'));
     }
 
 

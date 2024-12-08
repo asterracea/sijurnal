@@ -17,12 +17,12 @@
                 <button class="inline-flex items-center p-2 hover:bg-gray-100 focus:bg-gray-100 rounded-lg">
                     <span class="sr-only">User Menu</span>
                     <div class="hidden md:flex md:flex-col md:items-end md:leading-tight">
-                        {{-- <span class="font-semibold">
-                            {{ $profile->nama_guru }}
+                        <span class="font-semibold">
+                            {{ $accountname->nama_guru }}
                         </span>
                         <span class="text-sm text-gray-600">
-                            {{ $user->role }}
-                        </span> --}}
+                            {{ Auth::user()->role }}
+                        </span>
                     </div>
                     <span class="h-12 w-12 ml-2 sm:ml-3 mr-2 bg-gray-100 rounded-full overflow-hidden">
                       <img src="{{ asset('img/logo_gamaliel.png') }}" alt="user profile photo" class="h-full w-full object-cover">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Jadwal;
 use App\Models\Kelas;
 use App\Models\DataGuru;
@@ -19,8 +20,10 @@ class CreateJadwalController extends Controller
     $kelas = Kelas::all();
     $mapel = Mapel::all();
     $jadwal = Jadwal::all();
+    $user = Auth::user();
+    $accountname = $user->profile; 
 
-    return view('admin.datajadwal', compact('gurus', 'tahun', 'kelas', 'mapel', 'jadwal'));
+    return view('admin.datajadwal', compact('gurus', 'tahun', 'kelas', 'mapel', 'jadwal','accountname'));
 }
 
     public function store(Request $request)

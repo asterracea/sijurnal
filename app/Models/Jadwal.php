@@ -21,6 +21,8 @@ class Jadwal extends Model
         'jam_selesai',
     ];
 
+    public $incrementing = true;
+    protected $primaryKey = 'id_jadwal';
     public function guru()
     {
         return $this->belongsTo(DataGuru::class, 'nip', 'nip');
@@ -40,8 +42,14 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Mapel::class, 'id_mapel', 'id_mapel');
     }
+    public function jurnal()
+    {
+        return $this->belongsTo(Jurnal::class, 'id_jurnal');
+    }
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class, 'nip');
+    }
 
-    public $incrementing = true;
-    protected $primaryKey = 'id_jadwal';
 }
 

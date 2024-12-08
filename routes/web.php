@@ -46,6 +46,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/admin/mapel/{id_mapel}', [CreateMapelController::class, 'update'])->name('mapel.update');
     Route::delete('/admin/mapel/{id_mapel}', [CreateMapelController::class, 'destroy'])->name('mapel.destroy');
 
+    Route::get('/admin/jurnal', [AdminController::class, 'viewjurnal'])->middleware('RoleMiddleware:admin')->name('datajurnal');
+
     Route::get('/admin/account_user', [AccUserController::class, 'index'])->name('account_user');
     // Route::get('/admin/create_dataguru', [CreateDataGuruController::class, 'index'])->name('create_dataguru');
     Route::get('/admin/create-dataguru', [CreateDataGuruController::class, 'create'])->name('create_dataguru');
@@ -55,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
     //guru
     Route::get('/guru/home', [GuruController::class, 'index'])->middleware('RoleMiddleware:guru')->name('guru/home');
     Route::get('/guru/formjurnal', [FormJurnalController::class, 'index'])->middleware('RoleMiddleware:guru')->name('formjurnal');
+    Route::get('/guru/jurnal', [GuruController::class, 'viewjurnal'])->middleware('RoleMiddleware:guru')->name('guru/jurnal');
+    
 
     //gurupiket
     Route::get('/gurupiket/home', [GuruPiketController::class, 'index'])->middleware('RoleMiddleware:guru_piket')->name('gurupiket/home');

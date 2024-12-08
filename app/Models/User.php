@@ -29,7 +29,17 @@ class User extends Authenticatable
     }
     public function profile()
     {
-        return $this->hasOne(Profile::class, 'nip');
+        return $this->hasOne(Profile::class, 'nip','id_user');
+    }
+
+    public function jadwalPelajaran()
+    {
+        return $this->hasMany(JadwalPelajaran::class, 'nip');
+    }
+
+    public function jurnal()
+    {
+        return $this->hasMany(Jurnal::class, 'nip');
     }
 }
 // {
