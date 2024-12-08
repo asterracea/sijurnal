@@ -44,4 +44,3 @@ class Jadwal extends Model
     public $incrementing = true;
     protected $primaryKey = 'id_jadwal';
 }
-

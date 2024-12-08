@@ -10,11 +10,19 @@
             <div class="relative text-black font-bold text-xl w-auto">
                 <h1>Jadwal Pelajaran</h1>
             </div>
-            <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
-                Create
-            </button>
+            <div class="flex items-center space-x-4">
+                <!-- Dropdown Filter -->
+                <select id="statusFilter" class="px-8 py-2 border rounded" onchange="filterStatus()">
+                    <option value="">Semua Status</option>
+                    <option value="Aktif">Aktif</option>
+                    <option value="Tidak Aktif">Tidak Aktif</option>
+                </select>
+                <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
+                    Create
+                </button>
+            </div>
         </div>
-        <table class="w-full">
+        <table id="data-table" class="w-full">
             <thead>
                 <tr class="bg-gray-50">
                     <th class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">Nama Guru</th>
@@ -25,10 +33,11 @@
                     <th class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">Hari</th>
                     <th class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">Jam Mulai</th>
                     <th class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">Jam Selesai</th>
+                    <th class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">Status</th>
                     <th class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-300">
+            <tbody class="divide-y divide-gray-300" id="datajadwal-table-body">
                 @foreach($jadwal as $item)
                     <tr>
                         <td class="p-5">{{ $item->guru->nama_guru }}</td>
@@ -39,9 +48,9 @@
                         <td class="p-5">{{ $item->hari }}</td>
                         <td class="p-5">{{ $item->jam_mulai }}</td>
                         <td class="p-5">{{ $item->jam_selesai }}</td>
+                        <td class="p-5">{{ $item->tahun->status }}</td>
                         <td class="p-5 flex space-x-2">
-                            <button onclick="openEditModal({{ $item->id }}, '{{ $item->guru->nip }}', '{{ $item->tahun->id_tahun }}', '{{ $item->kelas->id_kelas }}', '{{ $item->mapel->id_mapel }}', '{{ $item->hari }}', '{{ $item->jam_mulai }}', '{{ $item->jam_selesai }}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                            <button onclick="openDeleteModal({{ $item->id }})" class="bg-red-500 text-white px-2 py-1 rounded">Hapus</button>
+                            <button onclick="openEditModal({{ $item->id_jadwal }}, '{{ $item->guru->nip }}', '{{ $item->tahun->id_tahun }}', '{{ $item->kelas->id_kelas }}', '{{ $item->mapel->id_mapel }}', '{{ $item->hari }}', '{{ $item->jam_mulai }}', '{{ $item->jam_selesai }}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                         </td>
                     </tr>
                 @endforeach
@@ -49,6 +58,20 @@
         </table>
     </div>
 </div>
+
+@if ($errors->any())
+    <div id="error-message" class="bg-red-500 text-white p-3 rounded mb-4">
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
+@endif
+
+@if (session('success'))
+    <div id="success-message" class="bg-red-500 text-white p-3 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
 
 <!-- Modal Create -->
 <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden flex justify-center items-center">
@@ -59,6 +82,7 @@
             <div class="mb-4">
                 <label for="nip" class="block text-sm font-semibold">Nama Guru</label>
                 <select name="nip" id="nip" class="w-full px-3 py-2 border rounded" required>
+                    <option value="">Pilih Guru</option>
                     @foreach($gurus as $guru)
                         <option value="{{ $guru->nip }}">{{ $guru->nama_guru }}</option>
                     @endforeach
@@ -67,6 +91,7 @@
             <div class="mb-4">
                 <label for="id_tahun" class="block text-sm font-semibold">Tahun Ajaran</label>
                 <select name="id_tahun" id="id_tahun" class="w-full px-3 py-2 border rounded" required>
+                    <option value="">Pilih Tahun Ajaran</option>
                     @foreach($tahun as $item)
                         <option value="{{ $item->id_tahun }}">{{ $item->tahun_ajaran }} - {{ $item->semester }}</option>
                     @endforeach
@@ -75,6 +100,7 @@
             <div class="mb-4">
                 <label for="id_kelas" class="block text-sm font-semibold">Nama Kelas</label>
                 <select name="id_kelas" id="id_kelas" class="w-full px-3 py-2 border rounded" required>
+                    <option value="">Pilih Kelas</option>
                     @foreach($kelas as $item)
                         <option value="{{ $item->id_kelas }}">{{ $item->nama_kelas }}</option>
                     @endforeach
@@ -83,6 +109,7 @@
             <div class="mb-4">
                 <label for="id_mapel" class="block text-sm font-semibold">Mata Pelajaran</label>
                 <select name="id_mapel" id="id_mapel" class="w-full px-3 py-2 border rounded" required>
+                    <option value="">Pilih Mata Pelajaran</option>
                     @foreach($mapel as $item)
                         <option value="{{ $item->id_mapel }}">{{ $item->nama_mapel }}</option>
                     @endforeach
@@ -91,6 +118,7 @@
             <div class="mb-4">
                 <label for="hari" class="block text-sm font-semibold">Hari</label>
                 <select name="hari" id="hari" class="w-full px-3 py-2 border rounded" required>
+                    <option value="">Pilih Hari</option>
                     <option value="Senin">Senin</option>
                     <option value="Selasa">Selasa</option>
                     <option value="Rabu">Rabu</option>
@@ -108,14 +136,14 @@
                 <input type="time" name="jam_selesai" id="jam_selesai" class="w-full px-3 py-2 border rounded" required>
             </div>
             <div class="flex justify-end space-x-4">
-                <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <button type="button" onclick="resetAndCloseModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
-<div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden justify-center items-center">
+<div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden flex justify-center items-center">
     <div class="bg-white rounded-lg w-1/3 p-5">
         <h2 class="text-xl font-bold mb-4">Edit Jadwal Pelajaran</h2>
         <form id="edit-form" action="" method="POST">
@@ -125,27 +153,50 @@
 
             <div class="mb-4">
                 <label for="edit_nip" class="block text-sm font-semibold">Nama Guru</label>
-                <input type="text" name="nip" id="edit_nip" class="w-full px-3 py-2 border rounded" required>
+                <select name="nip" id="edit_nip" class="w-full px-3 py-2 border rounded" required>
+                    @foreach($gurus as $guru)
+                        <option value="{{ $guru->nip }}">{{ $guru->nama_guru }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="mb-4">
                 <label for="edit_id_tahun" class="block text-sm font-semibold">Tahun Ajaran</label>
-                <input type="text" name="id_tahun" id="edit_id_tahun" class="w-full px-3 py-2 border rounded" required>
+                <select name="id_tahun" id="edit_id_tahun" class="w-full px-3 py-2 border rounded" required>
+                    @foreach($tahun as $tahun)
+                        <option value="{{ $tahun->id_tahun }}">{{ $tahun->tahun_ajaran }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="mb-4">
                 <label for="edit_id_kelas" class="block text-sm font-semibold">Nama Kelas</label>
-                <input type="text" name="id_kelas" id="edit_id_kelas" class="w-full px-3 py-2 border rounded" required>
+                <select name="id_kelas" id="edit_id_kelas" class="w-full px-3 py-2 border rounded" required>
+                    @foreach($kelas as $kelas)
+                        <option value="{{ $kelas->id_kelas }}">{{ $kelas->nama_kelas }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="mb-4">
                 <label for="edit_id_mapel" class="block text-sm font-semibold">Mata Pelajaran</label>
-                <input type="text" name="id_mapel" id="edit_id_mapel" class="w-full px-3 py-2 border rounded" required>
+                <select name="id_mapel" id="edit_id_mapel" class="w-full px-3 py-2 border rounded" required>
+                    @foreach($mapel as $mapel)
+                        <option value="{{ $mapel->id_mapel }}">{{ $mapel->nama_mapel }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="mb-4">
                 <label for="edit_hari" class="block text-sm font-semibold">Hari</label>
-                <input type="text" name="hari" id="edit_hari" class="w-full px-3 py-2 border rounded" required>
+                <select name="hari" id="edit_hari" class="w-full px-3 py-2 border rounded" required>
+                    <option value="Senin">Senin</option>
+                    <option value="Selasa">Selasa</option>
+                    <option value="Rabu">Rabu</option>
+                    <option value="Kamis">Kamis</option>
+                    <option value="Jumat">Jumat</option>
+                    <option value="Sabtu">Sabtu</option>
+                </select>
             </div>
 
             <div class="mb-4">
@@ -168,6 +219,20 @@
 </div>
 
 <script>
+    function filterStatus() {
+    const status = document.getElementById('statusFilter').value;
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+        const statusCell = row.querySelector('td:nth-child(9)'); // Kolom Status
+        if (status === '' || statusCell.textContent.trim() === status) {
+            row.style.display = ''; // Tampilkan baris
+        } else {
+            row.style.display = 'none'; // Sembunyikan baris
+        }
+    });
+}
+
     document.addEventListener('DOMContentLoaded', function () {
         const errorMessage = document.getElementById('error-message');
         if (errorMessage) {
@@ -177,10 +242,19 @@
         }
     });
 
-    function openEditModal(id_jadwal, id_tahun, nip, id_kelas, id_mapel, hari, jam_mulai, jam_selesai) {
+    document.addEventListener('DOMContentLoaded', function () {
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) {
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+    });
+
+    function openEditModal(id_jadwal, nip, id_tahun, id_kelas, id_mapel, hari, jam_mulai, jam_selesai) {
     document.getElementById('edit-id').value = id_jadwal;
-    document.getElementById('edit_id_tahun').value = id_tahun;
     document.getElementById('edit_nip').value = nip;
+    document.getElementById('edit_id_tahun').value = id_tahun;
     document.getElementById('edit_id_kelas').value = id_kelas;
     document.getElementById('edit_id_mapel').value = id_mapel;
     document.getElementById('edit_hari').value = hari;
@@ -188,22 +262,46 @@
     document.getElementById('edit_jam_selesai').value = jam_selesai;
     document.getElementById('edit-modal').classList.remove('hidden');
 
-    document.getElementById('edit-form').action = '/admin/datajadwal/' + id_tahun;
+    document.getElementById('edit-form').action = '/admin/datajadwal/' + id_jadwal;
+
+    document.getElementById('edit-form').action = '{{ route('datajadwal.update', ':id') }}'.replace(':id', id_jadwal);
 
     document.getElementById('edit-modal').classList.remove('hidden');
     }
 
     function openDeleteModal(id) {
-        document.getElementById('delete-form').action = '/admin/datajadwal/' + id;  // Set the form action
-        document.getElementById('delete-modal').classList.remove('hidden'); // Show the delete modal
+        document.getElementById('delete-form').action = '/admin/datajadwal/' + id;
+        document.getElementById('delete-modal').classList.remove('hidden');
     }
 
     function openModal() {
+        resetAndCloseModal();
         document.getElementById('modal').classList.remove('hidden');
+        const modal = document.getElementById('modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
     }
 
     function closeModal(modalId) {
         document.getElementById(modalId).classList.add('hidden');
+    }
+
+    function resetAndCloseModal() {
+    // Reset semua select ke opsi default
+    document.getElementById('nip').value = '';
+    document.getElementById('id_tahun').value = '';
+    document.getElementById('id_kelas').value = '';
+    document.getElementById('id_mapel').value = '';
+    document.getElementById('hari').value = '';
+
+    // Reset input time
+    document.getElementById('jam_mulai').value = '';
+    document.getElementById('jam_selesai').value = '';
+
+    // Tutup modal
+    const modal = document.getElementById('modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
     }
 </script>
 

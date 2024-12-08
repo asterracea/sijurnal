@@ -45,60 +45,31 @@ class CreateJadwalController extends Controller
     return redirect()->route('datajadwal')->with('success', 'Jadwal berhasil ditambahkan!');
 }
 
-public function update(Request $request, $id_jadwal)
+public function update(Request $request, $id)
 {
-    // Validasi data input
-    $validatedData = $request->validate([
-        'nip' => 'required|exists:tb_guru,nip',
-        'id_tahun' => 'required|exists:tb_tahun,id_tahun',
-        'id_kelas' => 'required|exists:tb_kelas,id_kelas',
-        'id_mapel' => 'required|exists:tb_mapel,id_mapel',
-        'hari' => 'required|string',
-        'jam_mulai' => 'required|date_format:H:i',
-        'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
+    $jadwal = Jadwal::findOrFail($id);
+
+    $validated = $request->validate([
+        'nip' => 'required',
+        'id_tahun' => 'required',
+        'id_kelas' => 'required',
+        'id_mapel' => 'required',
+        'hari' => 'required',
+        'jam_mulai' => 'required',
+        'jam_selesai' => 'required'
     ]);
 
-    // Cari record yang akan diupdate
-    $jadwal = Jadwal::findOrFail($id_jadwal);
+    $jadwal->update($validated);
 
-    // Cek apakah ada duplikasi data jadwal
-    $existingData = Jadwal::where('id_tahun', $validatedData['id_tahun'])
-        ->where('id_kelas', $validatedData['id_kelas'])
-        ->where('id_mapel', $validatedData['id_mapel'])
-        ->where('hari', $validatedData['hari'])
-        ->where('jam_mulai', $validatedData['jam_mulai'])
-        ->where('jam_selesai', $validatedData['jam_selesai'])
-        ->where('id_jadwal', '!=', $id_jadwal) // Kecualikan jadwal yang sedang diupdate
-        ->first();
-
-    if ($existingData) {
-        // Jika data jadwal yang sama sudah ada
-        return redirect()->back()->withErrors(['error' => 'Jadwal dengan data yang sama sudah ada.']);
+    return redirect()->back()->with('success', 'Jadwal berhasil diupdate');
     }
-
-    // Update data jadwal
-    $jadwal->nip = $validatedData['nip'];
-    $jadwal->id_tahun = $validatedData['id_tahun'];
-    $jadwal->id_kelas = $validatedData['id_kelas'];
-    $jadwal->id_mapel = $validatedData['id_mapel'];
-    $jadwal->hari = $validatedData['hari'];
-    $jadwal->jam_mulai = $validatedData['jam_mulai'];
-    $jadwal->jam_selesai = $validatedData['jam_selesai'];
-    $jadwal->save();
-
-    // Redirect dengan pesan sukses
-    return redirect()->route('datajadwal')->with('success', 'Jadwal berhasil diupdate!');
-}
 
     public function destroy($id_jadwal)
     {
-        // Find the record to delete
         $jadwal = Jadwal::findOrFail($id_jadwal);
 
-        // Delete the record
         $jadwal->delete();
 
-        // Redirect back with success message
-        return redirect()->route('jadwal')->with('success', 'Jadwal pelajaran berhasil dihapus');
+        return redirect()->route('jadwal')->with('delete', 'Jadwal pelajaran berhasil dihapus');
     }
 }

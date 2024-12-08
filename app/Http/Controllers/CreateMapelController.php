@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\Models\Mapel;
 
 class CreateMapelController extends Controller
@@ -63,19 +64,27 @@ public function update(Request $request, $id_mapel)
     $mapel->save();
 
     // Redirect or return response
-    return redirect()->route('mapel')->with('success', 'Mata Pelajaran updated successfully');
+    return redirect()->route('mapel')->with('success', 'Mata pelajaran berhasil diupdate');
 }
 
-public function destroy($id_mapel)
-{
-    // Find the record to delete
-    $mapel = Mapel::findOrFail($id_mapel);
+    public function destroy($id_mapel)
+    {
+        try {
+            // Coba hapus data
+            Mapel::findOrFail($id_mapel)->delete();
 
-    // Delete the record
-    $mapel->delete();
+            // Jika berhasil, redirect dengan pesan sukses
+            return redirect()->route('mapel')->with('delete', 'Mata pelajaran berhasil dihapus.');
+        } catch (QueryException $e) {
+            // Tangkap error foreign key constraint violation
+            if ($e->getCode() === "23000") {
+                // Redirect dengan pesan error
+                return redirect()->route('mapel')->withErrors(['error' => 'Data tidak dapat dihapus karena berkorelasi dengan data lain.']);
+            }
 
-    // Redirect back with success message
-    return redirect()->route('mapel')->with('success', 'Mata Pelajaran berhasil dihapus');
-}
+            // Jika error lain, lempar ulang
+            throw $e;
+        }
+    }
 
 }

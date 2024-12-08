@@ -42,6 +42,18 @@
     </div>
 @endif
 
+@if (session('success'))
+    <div id="success-message" class="bg-red-500 text-white p-3 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if (session('delete'))
+    <div id="delete-message" class="bg-red-500 text-white p-3 rounded mb-4">
+        {{ session('delete') }}
+    </div>
+@endif
+
 <!-- Modal -->
 <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden flex justify-center items-center">
     <div class="bg-white rounded-lg w-1/3 p-5">
@@ -53,7 +65,7 @@
                 <input type="text" name="nama_mapel" id="nama_mapel" class="w-full px-3 py-2 border rounded" required>
             </div>
             <div class="flex justify-end space-x-4">
-                <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                <button type="button" onclick="resetAndCloseModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
             </div>
         </form>
@@ -61,7 +73,7 @@
 </div>
 
 <!-- Modal Edit -->
-<div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden justify-center items-center">
+<div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden flex justify-center items-center">
     <div class="bg-white rounded-lg w-1/3 p-5">
         <h2 class="text-xl font-bold mb-4">Edit Mata Pelajaran</h2>
         <form id="edit-form" action="" method="POST">
@@ -84,7 +96,7 @@
 </div>
 
 <!-- Modal Hapus -->
-<div id="delete-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden justify-center items-center">
+<div id="delete-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden flex justify-center items-center">
     <div class="bg-white rounded-lg w-1/3 p-5">
         <h2 class="text-xl font-bold mb-4">Konfirmasi Hapus</h2>
         <p>Apakah Anda yakin ingin menghapus mata pelajaran ini?</p>
@@ -109,6 +121,24 @@
         }
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) {
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteMessage = document.getElementById('delete-message');
+        if (deleteMessage) {
+            setTimeout(() => {
+                deleteMessage.style.display = 'none';
+            }, 3000);
+        }
+    });
+
     function openEditModal(id_mapel, nama_mapel) {
     document.getElementById('edit-id').value = id_mapel; // Set ID untuk edit
     document.getElementById('edit_nama_mapel').value = nama_mapel;
@@ -126,11 +156,25 @@
     }
 
     function openModal() {
+        resetAndCloseModal();
         document.getElementById('modal').classList.remove('hidden');
+        const modal = document.getElementById('modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
     }
 
     function closeModal(modalId) {
         document.getElementById(modalId).classList.add('hidden');
+    }
+
+    function resetAndCloseModal() {
+    // Reset semua select ke opsi default
+    document.getElementById('nama_mapel').value = '';
+
+    // Tutup modal
+    const modal = document.getElementById('modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
     }
 </script>
 
