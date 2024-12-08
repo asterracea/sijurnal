@@ -11,7 +11,6 @@
     <header class="bg-white p-4 shadow-md text-gray-500 rounded-xl z-0 ">
         <div class="container mx-auto flex justify-between items-center">
             <div class="relative text-gray-500 focus-within:text-gray-900 w-auto">
-                <input type="text" id="default-search" class="block w-64 h-11 p-5 text-base font-normal text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Search">
             </div>
             <div class="flex flex-shrink-0 items-center ml-auto">
                 <button class="inline-flex items-center p-2 hover:bg-gray-100 focus:bg-gray-100 rounded-lg">

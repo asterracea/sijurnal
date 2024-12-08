@@ -54,8 +54,19 @@
                         <li class="p-3 rounded-md hover:bg-blue-500">
                             <a href="{{ route('datajadwal') }}" class="block text-md font-bold hover:text-white">Jadwal Pelajaran</a>
                         </li>
-                        <li class="p-3 rounded-md hover:bg-blue-500">
-                            <a href="{{ route('datajurnal') }}" class="block text-md font-bold hover:text-white">Jurnal</a>
+                        <li class="p-3 rounded-md hover:bg-blue-500 menu-item">
+                            <a href="#" onclick="toggleSubmenu(event)" class="block text-md font-bold hover:text-white">Jadwal Kelas</a>
+                            <ul class="submenu pl-4 mt-2">
+                                <li class="p-2 rounded-md hover:bg-blue-400">
+                                    <a href="{{ route('jadwalkelas10') }}" class="block text-sm hover:text-white">Kelas 10</a>
+                                </li>
+                                <li class="p-2 rounded-md hover:bg-blue-400">
+                                    <a href="{{ route('jadwalkelas11') }}" class="block text-sm hover:text-white">Kelas 11</a>
+                                </li>
+                                <li class="p-2 rounded-md hover:bg-blue-400">
+                                    <a href="{{ route('jadwalkelas12') }}" class="block text-sm hover:text-white">Kelas 12</a>
+                                </li>
+                            </ul>
                         </li>
                     @endif
 

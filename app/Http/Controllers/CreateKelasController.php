@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\Models\Kelas;
 
 class CreateKelasController extends Controller
@@ -68,16 +69,24 @@ public function update(Request $request, $id_kelas)
     return redirect()->route('kelas')->with('success', 'Kelas updated successfully');
 }
 
-public function destroy($id_kelas)
-{
-    // Find the record to delete
-    $tahun = Kelas::findOrFail($id_kelas);
+    public function destroy($id_kelas)
+    {
+        try {
+            // Coba hapus data
+            Kelas::findOrFail($id_kelas)->delete();
 
-    // Delete the record
-    $tahun->delete();
+            // Jika berhasil, redirect dengan pesan sukses
+            return redirect()->route('kelas')->with('delete', 'Kelas berhasil dihapus.');
+        } catch (QueryException $e) {
+            // Tangkap error foreign key constraint violation
+            if ($e->getCode() === "23000") {
+                // Redirect dengan pesan error
+                return redirect()->route('kelas')->withErrors(['error' => 'Data tidak dapat dihapus karena berkorelasi dengan data lain.']);
+            }
 
-    // Redirect back with success message
-    return redirect()->route('kelas')->with('success', 'Kelas berhasil dihapus');
-}
+            // Jika error lain, lempar ulang
+            throw $e;
+        }
+    }
 
 }
