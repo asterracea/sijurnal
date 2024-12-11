@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next, $role): Response
     {
         // Cek apakah pengguna terautentikasi
@@ -23,13 +18,16 @@ class RoleMiddleware
 
         // Cek apakah role pengguna sesuai
         if (Auth::user()->role !== $role) {
-            return redirect('/dashboard')->with('error', 'You do not have permission to access this page.');
+            // Redirect kembali ke halaman sebelumnya
+            return redirect()->back()->with('error', 'You do not have permission to access this page.');
         }
+        $response = $next($request);
+        $response->headers->set('Cache-Control', 'nocache, no-store, must-revalidate');
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', '0');
 
-        return $next($request);
-
-        // // Redirect ke URL sesuai role jika tidak sesuai
-        // Auth::logout(); // Logout pengguna
-        // return redirect('/login')->withErrors("Access denied due to invalid role.");
+        
+        return $response;
     }
+    
 }

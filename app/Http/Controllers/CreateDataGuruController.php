@@ -18,7 +18,9 @@ class CreateDataGuruController extends Controller
     // Menampilkan form
     public function create()
     {
-        return view('admin.create_dataguru');
+        $user = Auth::user();
+        $accountname = $user->profile; 
+        return view('admin.create_dataguru', compact('accountname'));
     }
 
     // Menyimpan data ke database
