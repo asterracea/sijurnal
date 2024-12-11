@@ -57,37 +57,7 @@
                 </div>
             </div>
         </div>
-        {{-- <table class="w-full">
-            <thead>
-                @php
-                   $theads = [
-                                'Tanggal',
-                                'Nama Guru',
-                                'Kelas',
-                                'Mata Pelajaran',
-                                'Rencana',
-                                'Realisasi',
-                                'Foto'
-                            ];
-                 @endphp
-                <tr class="bg-gray-50">
-                    @foreach($theads as $thead)
-                        <th class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">{{$thead}}</th>
-                    @endforeach
-                    
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-300">
-                @foreach($jurnals as $jurnal)
-                    <tr>
-                        <td>{{ $jurnal->tanggal }}</td>
-                        <td>{{ $jurnal->guru->nama_guru }}</td>
-                        <td>{{ $jurnal->kelas->nama_kelas }}</td>
-                        
-                    </tr>
-                @endforeach
-            </tbody>
-        </table> --}}
+        
         <table class="min-w-full bg-white border border-gray-300 rounded-lg">
             <thead>
                 <tr class="bg-gray-100">
@@ -119,23 +89,43 @@
     <div id="modal" class="flex fixed z-50 inset-0 items-center justify-center bg-gray-800 bg-opacity-50 hidden">
         <div class="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[80vh] mx-4 overflow-auto">
             <h3 class="text-xl font-semibold mb-6 text-center">Isi Jurnal Harian Mengajar</h3>
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('jurnal.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <!-- Tanggal -->
-                    
+                    <div class="mb-2">
+                        <label for="hari" class="text-sm font-medium text-gray-700">Hari</label>
+                        <input type="text" id="hari" name="hari" class="w-full p-2 border rounded-lg mt-1" required readonly>
+                    </div>
                     <div class="mb-2">
                         <label for="tanggal" class="text-sm font-medium text-gray-700">Tanggal</label>
-                        <input type="date" id="tanggal" name="tanggal" class="w-full p-2 border rounded-lg mt-1" required>
+                        <input type="date" id="tanggal" name="tanggal" class="w-full p-2 border rounded-lg mt-1" required readonly>
                     </div>
                     <div class="mb-2">
-                        <label for="jam_mulai" class="text-sm font-medium text-gray-700">Jam mulai</label>
-                        <input type="text" id="jam_mulai" name="jam_mulai" class="w-full p-2 border rounded-lg mt-1" required>
+                        <label for="mapel" class="text-sm font-medium text-gray-700">Mata Pelajaran</label>
+                        <select id="mapel" name="id_jadwal" class="w-full p-2 border rounded-lg mt-1">
+                            @foreach ($jadwalstoday as $pelajaran)
+                                <option value="">Pilih Mapel</option>
+                                <option value="{{ $pelajaran->id_mapel }}"
+                                        data-jam-mulai="{{ $pelajaran->jam_mulai }}"
+                                        data-jam-selesai="{{ $pelajaran->jam_selesai }}">
+                                    {{ $pelajaran->mapel->nama_mapel }}
+                                </option>
+                            @endforeach
+                        </select>
+                        
                     </div>
-                    <div class="mb-2">
-                        <label for="jam_selesai" class="text-sm font-medium text-gray-700">Jam Selesai</label>
-                        <input type="text" id="jam_selesai" name="jam_selesai" class="w-full p-2 border rounded-lg mt-1" required>
+                    
+                    <div class="mb-4">
+                        <label for="jam_mulai" class="block text-sm font-semibold">Jam Mulai</label>
+                        <input type="time" name="jam_mulai" id="jam_mulai" class="w-full px-3 py-2 border rounded" required>
                     </div>
+                    <div class="mb-4">
+                        <label for="jam_selesai" class="block text-sm font-semibold">Jam Selesai</label>
+                        <input type="time" name="jam_selesai" id="jam_selesai" class="w-full px-3 py-2 border rounded" required>
+                    </div>
+                    
+                    
 
                     <!-- Rencana -->
                     <div class="mb-2">
@@ -185,17 +175,32 @@
 
 </div>
 <script>
-    // Mengatur nilai input tanggal ke hari ini dan menampilkan dalam span
+    // Mengambil elemen input tanggal dan hari
     const tanggalInput = document.getElementById('tanggal');
+    const hariInput = document.getElementById('hari');
 
-    // Menentukan tanggal saat ini dalam format YYYY-MM-DD
+    // Mendapatkan tanggal hari ini
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Menambahkan leading zero jika bulan < 10
-    const day = String(today.getDate()).padStart(2, '0'); // Menambahkan leading zero jika hari < 10
+    const formattedDate = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    tanggalInput.value = formattedDate;
 
-    // Format tanggal dalam bentuk YYYY-MM-DD
-    const formattedDate = `${year}-${month}-${day}`;
+    // Mengubah array hari dalam bahasa Indonesia
+    const daysOfWeek = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const dayName = daysOfWeek[today.getDay()]; // Mengambil hari dalam bentuk string (e.g., "Senin")
+    
+    // Menampilkan nama hari di input "hari"
+    hariInput.value = dayName;
+
+    document.getElementById('mapel').addEventListener('change', function() {
+    var selectedOption = this.options[this.selectedIndex];  // Mendapatkan opsi yang dipilih
+    var jamMulai = selectedOption.getAttribute('data-jam-mulai');  // Mengambil jam mulai
+    var jamSelesai = selectedOption.getAttribute('data-jam-selesai');  // Mengambil jam selesai
+
+    // Mengisi input jam mulai dan jam selesai dengan nilai yang sesuai
+    document.getElementById('jam_mulai').value = jamMulai;
+    document.getElementById('jam_selesai').value = jamSelesai;
+});
+
 
     // Ambil elemen modal dan tombol
     const modal = document.getElementById('modal');

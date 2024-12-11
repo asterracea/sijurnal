@@ -14,7 +14,6 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->back(); // Kembali ke halaman sebelumnya
         }
-
         return view('login');  
     }
 
@@ -48,7 +47,7 @@ class AuthController extends Controller
             // Pengalihan berdasarkan role pengguna
             switch ($user->role) {
                 case 'superadmin':
-                    return redirect()->intended('/dashboard'); // Superadmin dashboard
+                    return redirect()->intended('/superadmin/dashboard'); // Superadmin dashboard
                 case 'admin':
                     return redirect()->intended('/admin/dashboard'); // Admin dashboard
                 case 'guru':
