@@ -28,30 +28,29 @@
   <div class="sm:p-10 flex items-center justify-center">
     <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
       @php
-        $guruCount = App\Models\DataGuru::count();
-        $totalTeacher = $guruCount;
+        $tahunAktif = $tahun ? $tahun->tahun_ajaran : 'Tidak ada periode aktif';
         $cards = [
           [
             'icon' => 'fa-timeline',
             'title' => 'Periode aktif',
-            'value' => '2024',
+            'value' => $tahunAktif,
             'color' => 'purple',
           ],
           [
             'icon' => 'fa-user-graduate',
             'title' => 'Guru',
-            'value' => $totalTeacher,
+            'value' => $guruCount,
             'color' => 'green',
           ],
           [
             'icon' => 'fa-chalkboard-teacher',
             'title' => 'Guru Piket',
-            'value' => '10',
+            'value' => $guruPiketCount,
             'color' => 'blue',
           ],
         ];
       @endphp
-  
+
       @foreach ($cards as $card)
         <div class="flex items-center p-8 bg-white shadow rounded-lg">
           <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-{{ $card['color'] }}-600 bg-{{ $card['color'] }}-100 rounded-full mr-6">
@@ -65,16 +64,16 @@
       @endforeach
     </div>
   </div>
-  
+
     {{-- content --}}
     <div class="bg-white shadow-md rounded-xl overflow-hidden">
         <div class="flex justify-between items-center m-4">
             <div class="relative text-black font-bold text-xl w-auto">
                 <h1>Jurnal Guru</h1>
             </div>
-            
+
         </div>
-    </div> 
+    </div>
 </body>
 </html>
 @endsection
