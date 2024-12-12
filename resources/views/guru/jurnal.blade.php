@@ -4,6 +4,19 @@
 
 @section('content')
 <div class="flex-grow ">
+    <!-- Notifikasi Sukses atau Error -->
+    @if (session('error'))
+        <div class="alert alert-danger bg-red-100 text-red-700 px-4 py-3 rounded mb-4">
+            <strong>Error:</strong> {{ session('error') }}
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert alert-success bg-green-100 text-green-700 px-4 py-3 rounded mb-4">
+            <strong>Success:</strong> {{ session('success') }}
+        </div>
+    @endif
+   
     <div class="bg-white shadow-md rounded-xl overflow-hidden">
         <div class="flex justify-between items-center m-4">
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-full">
@@ -106,7 +119,7 @@
                         <select id="mapel" name="id_jadwal" class="w-full p-2 border rounded-lg mt-1">
                             @foreach ($jadwalstoday as $pelajaran)
                                 <option value="">Pilih Mapel</option>
-                                <option value="{{ $pelajaran->id_mapel }}"
+                                <option value="{{ $pelajaran->id_jadwal }}"
                                         data-jam-mulai="{{ $pelajaran->jam_mulai }}"
                                         data-jam-selesai="{{ $pelajaran->jam_selesai }}">
                                     {{ $pelajaran->mapel->nama_mapel }}

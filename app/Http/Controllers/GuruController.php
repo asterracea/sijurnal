@@ -63,7 +63,7 @@ class GuruController extends Controller
     {
         // Validasi data input
         $validatedData = $request->validate([
-            'id_jadwal' => 'required|exists:tb_jadwal,id_mapel',
+            'id_jadwal' => 'required|exists:tb_jadwal,id_jadwal',
             'hari' => 'required|string',
             'tanggal' => 'required|date',
             'jam_mulai' => 'required',
@@ -73,6 +73,29 @@ class GuruController extends Controller
             'foto' => 'nullable|image|max:1024', // File gambar dengan ukuran maksimal 1 MB
         ]);
         $nip = auth()->user()->nip;
+
+        // Mendapatkan jadwal berdasarkan id_jadwal
+        $jadwal = Jadwal::where('id_jadwal', $validatedData['id_jadwal'])->first();
+
+        if (!$jadwal) {
+            return redirect()->back()->with('error', 'Jadwal tidak ditemukan.');
+        }
+
+        // Validasi hari harus sesuai dengan jadwal
+        Carbon::setLocale('id');
+        $today = Carbon::now()->isoFormat('dddd'); // Nama hari dalam format lokal
+        if (strtolower($jadwal->hari) !== strtolower($today)) {
+            return redirect()->back()->with('error', 'Jurnal hanya dapat diisi pada hari yang sesuai jadwal.');
+        }
+
+        // Validasi waktu input dalam rentang jam jadwal
+        $currentTime = Carbon::now(); // Waktu saat ini
+        $scheduleStart = Carbon::createFromTimeString($jadwal->jam_mulai); // Jam mulai dari jadwal
+        $scheduleEnd = Carbon::createFromTimeString($jadwal->jam_selesai); // Jam selesai dari jadwal
+
+        if (!$currentTime->between($scheduleStart, $scheduleEnd)) {
+            return redirect()->back()->with('error', 'Jurnal hanya dapat diisi pada rentang waktu jadwal.');
+        }
 
         $fotoPath = null;
         if ($request->hasFile('foto')) {
