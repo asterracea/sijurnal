@@ -37,6 +37,12 @@
             'color' => 'purple',
           ],
           [
+            'icon' => 'fa-timeline',
+            'title' => 'Periode aktif',
+            'value' => $semester,
+            'color' => 'purple',
+          ],
+          [
             'icon' => 'fa-user-graduate',
             'title' => 'Guru',
             'value' => $guruCount,

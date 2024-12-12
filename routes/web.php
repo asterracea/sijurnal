@@ -25,18 +25,18 @@ Route::post('/login', [AuthController::class, 'login']); // Proses login
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    
+
     //superadmin
     Route::prefix('superadmin')->middleware('RoleMiddleware:superadmin')->group(function () {
         Route::get('/dashboard', [SuperAdminController::class, 'index'])->name('dashboard');
     });
-    
+
 
     // Rute Admin
     Route::prefix('admin')->middleware('RoleMiddleware:admin')->group(function () {
         // Dashboard
         Route::get('/dashboard', [AdminController::class, 'index'])->name('wellcome');
-        
+
         // Data Guru
         Route::get('/dataguru', [CreateDataGuruController::class, 'index'])->name('dataguru');
         Route::get('/create-dataguru', [CreateDataGuruController::class, 'create'])->name('create_dataguru');
@@ -74,6 +74,11 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/mapel/{id_mapel}', [CreateMapelController::class, 'update'])->name('mapel.update');
         Route::delete('/mapel/{id_mapel}', [CreateMapelController::class, 'destroy'])->name('mapel.destroy');
 
+        Route::get('/gurupiket', [AdminController::class, 'datapiket'])->name('gurupiket');
+        Route::post('/gurupiket', [AdminController::class, 'createpiket'])->name('gurupiket.createpiket');
+        Route::put('/gurupiket/{id_piket}', [AdminController::class, 'updatepiket'])->name('gurupiket.updatepiket');
+        Route::delete('/gurupiket/{id_piket}', [AdminController::class, 'destroy'])->name('kelas.destroy');
+
         // Jurnal
         Route::get('/jurnal', [AdminController::class, 'viewjurnal'])->name('datajurnal');
 
@@ -86,10 +91,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('guru')->middleware('RoleMiddleware:guru')->group(function () {
         // Dashboard Guru
         Route::get('/home', [GuruController::class, 'index'])->name('guru/home');
-    
+
         // Form Jurnal
         Route::get('/formjurnal', [FormJurnalController::class, 'index'])->name('formjurnal');
-    
+
         // Jurnal
         Route::get('/jurnal', [GuruController::class, 'viewjurnal'])->name('guru/jurnal');
         Route::post('/jurnal', [GuruController::class, 'store'])->name('jurnal.store');
@@ -99,7 +104,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('guru_piket')->middleware('RoleMiddleware:guru_piket')->group(function () {
         Route::get('/gurupiket/home', [GuruPiketController::class, 'index'])->name('gurupiket/home');
     });
-    
+
 });
 
 
