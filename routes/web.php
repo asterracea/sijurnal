@@ -98,6 +98,8 @@ Route::middleware(['auth'])->group(function () {
         // Jurnal
         Route::get('/jurnal', [GuruController::class, 'viewjurnal'])->name('guru/jurnal');
         Route::post('/jurnal', [GuruController::class, 'store'])->name('jurnal.store');
+        Route::get('/jurnal/edit/{id_jurnal}', [GuruController::class, 'edit'])->name('guru.editjurnal');
+        Route::put('/jurnal/update/{id_jurnal}', [GuruController::class, 'update'])->name('guru.updatejurnal');
     });
 
     //gurupiket

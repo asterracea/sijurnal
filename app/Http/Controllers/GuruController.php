@@ -129,4 +129,47 @@ class GuruController extends Controller
         return redirect()->back()->with('success', 'Jurnal berhasil disimpan!');
 
     }
+    public function edit($id_jurnal)
+    {
+        
+        $jurnal = Jurnal::with('jadwal') // Ambil data jurnal beserta relasi jadwal
+                        ->where('id_jurnal', $id_jurnal) // Cari berdasarkan id_jurnal
+                        ->firstOrFail(); // Jika tidak ditemukan, tampilkan 404
+                        dd($jurnal);
+        // Ambil semua jadwal untuk digunakan dalam dropdown di form edit
+         $jadwals = Jadwal::all();
+
+        return view('guru.jurnal', compact('jurnal', 'jadwals'));
+    }
+    public function update(Request $request,$id_jurnal)
+    {
+        $jurnal = Jurnal::findOrFail($id_jurnal);
+        $validatedData= $request->validate([
+            //'nip' => $nip,
+            // 'id_jurnal' => 'required|exists:jurnals,id_jurnal',
+            'hari' => 'required|string',
+            'tanggal' => 'required|date',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required',
+            'rencana' => 'required|string',
+            'realisasi' => 'required|string',
+            'foto' => 'nullable|image|max:1024',
+            // Tambahkan validasi lain jika diperlukan
+        ]);
+        
+        // Cek apakah ada file foto yang di-upload
+        if ($request->hasFile('foto')) {
+            // Proses upload dan simpan path foto
+            $filePath = $request->file('foto')->store('uploads', 'public');
+            //$jurnal->foto = $filePath;
+            $validatedData['foto'] = $fotoPath;
+        }
+
+        // Simpan perubahan
+        $jurnal->update($validatedData);
+
+        //return redirect()->route('formjurnal')->with('success', 'Jurnal berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Jurnal berhasil diperbarui');
+       
+    }
 }
