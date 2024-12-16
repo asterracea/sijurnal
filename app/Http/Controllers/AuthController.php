@@ -83,10 +83,12 @@ class AuthController extends Controller
             }
         }
 
+
         // Jika gagal, kembalikan ke halaman login dengan error message
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ])->withInput();
+    }
     }
 
     // Fungsi logout

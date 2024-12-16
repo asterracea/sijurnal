@@ -50,7 +50,7 @@ class DataGuruController extends Controller
             $guru->nama_guru = $request->nama_guru;
             $guru->save();
 
-            return redirect()->route('dataguru.index')->with('success', 'Data berhasil diperbarui.');
+            return redirect()->back()->with('success', 'Data berhasil diperbarui.');
         } else {
             return redirect()->back()->withErrors(['error' => 'Data tidak ditemukan.']);
         }

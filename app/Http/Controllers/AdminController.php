@@ -13,16 +13,15 @@ class AdminController extends Controller
 {
     public function index()
     {
+
         $user = Auth::user();
         $accountname = $user->profile;
         $tahun = Tahun::where('status', 'Aktif')->first();
-        $semester = $tahun->semester;
+        $semester = $tahun  ? $tahun->semester : 'Tidak Ada';
         $guruCount = User::where('role', 'guru')->count(); // Jumlah guru
-        $guruPiketCount = GuruPiket::where('id_tahun', $tahun->id_tahun)->count();
+        $guruPiketCount = User::where('role', 'guru_piket')->count();
         return view('admin.dashboard',  compact('user', 'accountname', 'tahun', 'semester', 'guruCount', 'guruPiketCount'));
-        $accountname = $user->profile;
-        return view('admin.dashboard',  compact('user', 'accountname'));
-        return view('includes.header',  compact('user', 'accountname'));
+
     }
 
     public function datapiket(){
