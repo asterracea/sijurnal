@@ -9,7 +9,6 @@ use App\Models\Tahun;
 use App\Models\DataGuru;
 use App\Models\User;
 
-
 class AdminController extends Controller
 {
     public function index()
