@@ -9,12 +9,12 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    protected $table = 'tb_user'; 
+    protected $table = 'tb_user';
     protected $primaryKey = 'id_user';
     public $timestamps = false;  // Jika tabel tidak memiliki kolom created_at dan updated_at
-    
+
     protected $fillable = [
-        'nip', 'email', 'password', 'role', 'status'  
+        'nip', 'email', 'password', 'role', 'status'
     ];
 
     protected $hidden = [
@@ -32,14 +32,19 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class, 'nip','id_user');
     }
 
-    public function jadwalPelajaran()
-    {
-        return $this->hasMany(JadwalPelajaran::class, 'nip');
-    }
+    // public function jadwalPelajaran()
+    // {
+    //     return $this->hasMany(JadwalPelajaran::class, 'nip');
+    // }
 
     public function jurnal()
     {
         return $this->hasMany(Jurnal::class, 'nip');
+    }
+
+    public function dataGuru()
+    {
+        return $this->belongsTo(DataGuru::class, 'nip', 'nip');
     }
 }
 // {

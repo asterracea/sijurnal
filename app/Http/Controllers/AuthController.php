@@ -15,7 +15,7 @@ class AuthController extends Controller
             return redirect()->back(); // Kembali ke halaman sebelumnya
         }
 
-        return view('login');  
+        return view('login');
     }
 
     // Proses login
@@ -36,28 +36,36 @@ class AuthController extends Controller
         // Cek apakah user ada berdasarkan email
         $user = User::where('email', $email)->first();
 
-        // Jika user ditemukan dan password cocok
-        if ($user && Hash::check($password, $user->password)) {
-            Auth::login($user);  // Login user ke sistem
-            $request->session()->regenerate(); // Regenerasi session untuk keamanan
+        // Jika user ditemukan
+        if ($user) {
+            // Cek apakah status user adalah "Tidak Aktif"
+            if ($user->status !== 'Aktif') {
+                return redirect()->back()->with('account_inactive', true);
+            }
 
-            // Simpan informasi pengguna ke dalam sesi
-            $request->session()->put('user_name', $user->name);
-            $request->session()->put('user_role', $user->role);
+            // Jika password cocok
+            if (Hash::check($password, $user->password)) {
+                Auth::login($user); // Login user ke sistem
+                $request->session()->regenerate(); // Regenerasi session untuk keamanan
 
-            // Pengalihan berdasarkan role pengguna
-            switch ($user->role) {
-                case 'superadmin':
-                    return redirect()->intended('/dashboard'); // Superadmin dashboard
-                case 'admin':
-                    return redirect()->intended('/admin/dashboard'); // Admin dashboard
-                case 'guru':
-                    return redirect()->intended('/guru/home'); // Guru dashboard
-                case 'guru_piket':
-                    return redirect()->intended('/gurupiket/home'); // Guru Piket dashboard
-                default:
-                    // Jika role tidak terdaftar, redirect ke halaman default
-                    return redirect('/login')->with('error', 'Role tidak dikenali.');
+                // Simpan informasi pengguna ke dalam sesi
+                $request->session()->put('user_name', $user->name);
+                $request->session()->put('user_role', $user->role);
+
+                // Pengalihan berdasarkan role pengguna
+                switch ($user->role) {
+                    case 'superadmin':
+                        return redirect()->intended('/dashboard'); // Superadmin dashboard
+                    case 'admin':
+                        return redirect()->intended('/admin/dashboard'); // Admin dashboard
+                    case 'guru':
+                        return redirect()->intended('/guru/home'); // Guru dashboard
+                    case 'guru_piket':
+                        return redirect()->intended('/gurupiket/home'); // Guru Piket dashboard
+                    default:
+                        // Jika role tidak terdaftar, redirect ke halaman default
+                        return redirect('/login')->with('error', 'Role tidak dikenali.');
+                }
             }
         }
 

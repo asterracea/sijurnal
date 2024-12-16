@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+{{-- @extends('layouts.admin')
 
 @section('title', 'SiJurnal Guru')
 
@@ -52,4 +52,4 @@
 </body>
 </html>
 
-@endsection
+@endsection --}}

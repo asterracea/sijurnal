@@ -3,7 +3,6 @@
 @section('title', 'SiJurnal Guru')
 
 @section('content')
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,12 +19,8 @@
             <div class="flex justify-between items-center m-4">
                 <!-- Form title -->
                 <div class="relative text-black font-bold text-xl w-auto">
-                    <h1>Account Detail</h1>
+                    <h1>Account Detail for {{ $guru->nama_guru }}</h1> <!-- Nama guru ditampilkan -->
                 </div>
-                <button onclick="window.location.href='{{ route('create_dataguru') }}'"
-                    class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
-                    Create
-                </button>
             </div>
             <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
                 <div class="mb-4 flex justify-center">
@@ -33,7 +28,7 @@
                         <label class="block text-lg font-medium text-gray-600">Email</label>
                     </div>
                     <div class="w-2/3">
-                        <p class="text-xl text-gray-800">an@gmail.com</p>
+                        <p class="text-xl text-gray-800">{{ $user->email }}</p> <!-- Email user -->
                     </div>
                 </div>
 
@@ -42,7 +37,7 @@
                         <label class="block text-lg font-medium text-gray-600">Password</label>
                     </div>
                     <div class="w-2/3">
-                        <p class="text-xl text-gray-800">123</p>
+                        <p class="text-xl text-gray-800">********</p> <!-- Password tidak ditampilkan secara langsung -->
                     </div>
                 </div>
 
@@ -51,7 +46,7 @@
                         <label class="block text-lg font-medium text-gray-600">Role</label>
                     </div>
                     <div class="w-2/3">
-                        <p class="text-xl text-gray-800">Admin</p>
+                        <p class="text-xl text-gray-800">{{ $user->role ?? 'N/A' }}</p> <!-- Role pengguna -->
                     </div>
                 </div>
 
@@ -60,7 +55,7 @@
                         <label class="block text-lg font-medium text-gray-600">Status</label>
                     </div>
                     <div class="w-2/3">
-                        <p class="text-xl text-gray-800">Aktif</p>
+                        <p class="text-xl text-gray-800">{{ $user->status ?? 'Aktif' }}</p> <!-- Status pengguna -->
                     </div>
                 </div>
             </div>
@@ -68,5 +63,4 @@
     </div>
 </body>
 </html>
-
 @endsection

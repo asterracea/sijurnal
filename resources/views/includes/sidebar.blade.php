@@ -35,6 +35,9 @@
                             <a href="{{ route('wellcome') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
                         </li>
                         <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('datauser') }}" class="block text-md font-bold hover:text-white">Data User</a>
+                        </li>
+                        <li class="p-3 rounded-md hover:bg-blue-500">
                             <a href="{{ route('dataguru') }}" class="block text-md font-bold hover:text-white">Data Guru</a>
                         </li>
                         <li class="p-3 rounded-md hover:bg-blue-500 menu-item">

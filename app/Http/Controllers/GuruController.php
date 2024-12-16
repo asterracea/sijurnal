@@ -24,11 +24,11 @@ class GuruController extends Controller
                          ->with('kelas', 'mapel', 'tahun')  // Menyertakan relasi jadwal dengan kelas, mapel, dan tahun
                          ->get();
 
-        
-        
+
+
         return view('guru.dashboard',  compact('user', 'accountname','jadwals'));
         return view('includes.header',  compact('user','accountname'));
-        
+
     }
     function viewjurnal()
     {
@@ -48,6 +48,6 @@ class GuruController extends Controller
                          ->get();
 
         // Kirim data ke view
-        return view('guru.jurnal', compact('tahunAjaran','kelas','accountname','jurnals','jadwals'));
+        return view('guru.jurnal', compact('user','tahunAjaran','kelas','accountname','jurnals','jadwals'));
     }
 }

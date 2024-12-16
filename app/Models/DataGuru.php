@@ -9,14 +9,14 @@ class DataGuru extends Model
 {
     use HasFactory;
 
-    // Tabel yang digunakan oleh model
     protected $table = 'tb_guru';
+    protected $primaryKey = 'nip';
+    protected $fillable = ['nip', 'nama_guru'];
 
-    // Field yang bisa diisi secara massal (mass assignable)
-    public $timestamps = false;
-
-    protected $fillable = [
-        'nip',
-        'nama_guru',
-    ];
+    // Relasi dengan User
+    public function user()
+    {
+        return $this->hasOne(User::class, 'nip', 'nip');
+    }
 }
+
