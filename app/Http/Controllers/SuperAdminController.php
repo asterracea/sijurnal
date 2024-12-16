@@ -9,8 +9,10 @@ class SuperAdminController extends Controller
     function index()
     {
         $user = Auth::user();
-        $profile = $user->profile; 
-        return view('super_admin.dashboard',  compact('user', 'profile'));
-        return view('includes.header',  compact('user', 'profile'));
+        $accountname = $user->profile; 
+        
+        return view('super_admin.dashboard',  compact('user', 'accountname'));
+        return view('includes.header',  compact('user', 'accountname'));
+        
     }
 }

@@ -71,6 +71,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('gurupiket') }}" class="block text-md font-bold hover:text-white">Guru Piket</a>
+                        </li>
                     @endif
 
                     @if (auth()->user()->role === 'superadmin')

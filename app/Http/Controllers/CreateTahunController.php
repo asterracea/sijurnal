@@ -11,7 +11,7 @@ class CreateTahunController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $accountname = $user->profile; 
+        $accountname = $user->profile;
         $tahun = Tahun::all(); // Mengambil semua data tanpa relasi
         return view('admin.tahun', compact('tahun','accountname'));
     }
@@ -25,6 +25,11 @@ class CreateTahunController extends Controller
         'semester' => 'required|in:Ganjil,Genap',
         'status' => 'required|in:Aktif,Tidak Aktif',
     ]);
+
+    // Cek apakah ada tahun ajaran dengan status Aktif
+    if ($validatedData['status'] == 'Aktif' && Tahun::where('status', 'Aktif')->exists()) {
+        return redirect()->back()->withErrors(['error' => 'Hanya satu tahun ajaran yang bisa memiliki status Aktif.']);
+    }
 
     // Cek duplikasi data
     $existingData = Tahun::where('tahun_ajaran', $validatedData['tahun_ajaran'])

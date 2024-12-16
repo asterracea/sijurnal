@@ -14,6 +14,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->back(); // Kembali ke halaman sebelumnya
         }
+        return view('login');
 
         return view('login');
     }
@@ -52,6 +53,19 @@ class AuthController extends Controller
                 $request->session()->put('user_name', $user->name);
                 $request->session()->put('user_role', $user->role);
 
+            // Pengalihan berdasarkan role pengguna
+            switch ($user->role) {
+                case 'superadmin':
+                    return redirect()->intended('/superadmin/dashboard'); // Superadmin dashboard
+                case 'admin':
+                    return redirect()->intended('/admin/dashboard'); // Admin dashboard
+                case 'guru':
+                    return redirect()->intended('/guru/home'); // Guru dashboard
+                case 'guru_piket':
+                    return redirect()->intended('/gurupiket/home'); // Guru Piket dashboard
+                default:
+                    // Jika role tidak terdaftar, redirect ke halaman default
+                    return redirect('/login')->with('error', 'Role tidak dikenali.');
                 // Pengalihan berdasarkan role pengguna
                 switch ($user->role) {
                     case 'superadmin':
