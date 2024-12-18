@@ -12,6 +12,7 @@ class DataGuru extends Model
     protected $table = 'tb_guru';
     protected $primaryKey = 'nip';
     protected $fillable = ['nip', 'nama_guru'];
+    public $timestamps = false;
 
     // Relasi dengan User
     public function user()

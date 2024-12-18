@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nip')->unique();
             $table->string('nama_guru');
-            $table->timestamps();
+            //$table->timestamps();
         });
     }
 

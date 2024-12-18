@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Data Guru
         //Route::get('/dataguru', [AdminController::class, 'dataguru'])->name('dataguru');
+        //Route::get('/dataguru', [AdminController::class, 'dataguru'])->name('dataguru');
         // Route::get('/create-dataguru', [CreateDataGuruController::class, 'create'])->name('create_dataguru');
         // Route::post('/store-dataguru', [CreateDataGuruController::class, 'store'])->name('store_dataguru');
 
@@ -112,12 +113,13 @@ Route::middleware(['auth'])->group(function () {
 
         // Akun Pengguna
         //Route::get('/account_user', [AccUserController::class, 'index'])->name('account_user');
+        //Route::get('/jurnal', [AdminController::class, 'viewjurnal'])->name('datajurnal');
+
+        Route::get('/userpage', [UserPageController::class, 'index'])->name('userpage');
+        // // Route::get('/admin/create_dataguru', [CreateDataGuruController::class, 'index'])->name('create_dataguru');
     });
 
-    Route::get('/admin/jurnal', [AdminController::class, 'viewjurnal'])->middleware('RoleMiddleware:admin')->name('datajurnal');
 
-    Route::get('/admin/userpage', [UserPageController::class, 'index'])->name('userpage');
-    // // Route::get('/admin/create_dataguru', [CreateDataGuruController::class, 'index'])->name('create_dataguru');
 
     //guru
     Route::prefix('guru')->middleware('RoleMiddleware:guru')->group(function () {
@@ -136,9 +138,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/jurnal/update/{id_jurnal}', [GuruController::class, 'update'])->name('guru.updatejurnal');
 
     });
-    Route::get('/guru/home', [GuruController::class, 'index'])->middleware('RoleMiddleware:guru')->name('guru/home');
-    Route::get('/guru/formjurnal', [FormJurnalController::class, 'index'])->middleware('RoleMiddleware:guru')->name('formjurnal');
-    Route::get('/guru/jurnal', [GuruController::class, 'viewjurnal'])->middleware('RoleMiddleware:guru')->name('guru/jurnal');
+
 
 
     //gurupiket
