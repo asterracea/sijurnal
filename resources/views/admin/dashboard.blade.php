@@ -59,7 +59,7 @@
         @endphp
 
         @foreach ($cards as $card)
-          <div class="flex items-center p-4 bg-white shadow rounded-lg">
+        <div class="flex items-center p-4 sm:p-8 bg-white shadow rounded-lg">
           <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-{{ $card['color'] }}-600 bg-{{ $card['color'] }}-100 rounded-full mr-6">
             <i class="fa-solid {{ $card['icon'] }} text-xl"></i>
           </div>
