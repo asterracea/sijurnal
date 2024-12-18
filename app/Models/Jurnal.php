@@ -20,7 +20,7 @@ class Jurnal extends Model
 
     public function jadwal()
 {
-    return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
+    return $this->belongsTo(Jadwal::class, 'id_jadwal' );
 }
 
 

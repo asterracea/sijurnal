@@ -9,40 +9,91 @@ use App\Models\Kelas;
 use App\Models\User;
 use App\Models\Jurnal;
 use App\Models\Jadwal;
+use App\Models\Mapel;
+use App\Models\DataGuru;
+use App\Models\GuruPiket;
 
 class GuruController extends Controller
 {
-    function index()
-    {
-        $user = Auth::user();
-        $accountname = $user->profile;
-        $guruId = auth()->user()->nip;
-        $tahun = Tahun::where('status', 'Aktif')->first();
-        $semester = $tahun->semester;
-        $jadwals = Jadwal::where('nip', $guruId)
-                         ->with('kelas', 'mapel', 'tahun')
-                         ->get();
+    public function index()
+{
+    $user = Auth::user();
+    $guruId = auth()->user()->nip; // NIP guru yang login
 
-        return view('guru.dashboard',  compact('user', 'accountname','jadwals','tahun', 'semester'));
-        return view('includes.header',  compact('user','accountname'));
+    // Ambil data tahun aktif
+    $tahun = Tahun::where('status', 'Aktif')->first();
+    $semester = $tahun ? $tahun->semester : 'Tidak ada';
+
+    // Hari saat ini
+    Carbon::setLocale('id');
+    $today = Carbon::now()->translatedFormat('l'); // Nama hari dalam bahasa Indonesia (Senin, Selasa, dst)
+
+    // Query: Cek apakah guru piket pada hari ini
+    $piket = GuruPiket::where('nip', $guruId)
+                ->where('hari', $today) // Cek berdasarkan hari saja
+                ->first();
+
+    // Jika guru piket
+    $jurnals = [];
+    if ($piket) {
+        // Ambil jurnal kosong berdasarkan hari ini dan guru yang sedang piket
+        $jurnals = Jurnal::where('nip', $guruId)
+     ->where(function($query) {
+         $query->whereNull('rencana')->orWhere('rencana', '')
+               ->orWhereNull('realisasi')->orWhere('realisasi', '')
+               ->orWhereNull('foto')->orWhere('foto', '');
+     })
+     ->whereDate('tanggal', Carbon::now()->toDateString()) // Cek tanggal
+     ->get();
 
     }
 
-    public function viewjadwal()
-    {
-        $user = Auth::user();
-        $accountname = $user->profile;
-        $guruId = auth()->user()->nip;
-        $tahun = Tahun::where('status', 'Aktif')->first();
-        $semester = $tahun->semester;
-        $jadwals = Jadwal::where('nip', $guruId)
-                         ->with('kelas', 'mapel', 'tahun')
-                         ->get();
-        $jadwalCount = $jadwals->count();
+    // Return view dengan data yang sesuai
+    return view('guru.dashboard', [
+        'user' => $user,
+        'tahun' => $tahun,
+        'semester' => $semester,
+        'jurnals' => $jurnals,
+        'today' => $today,
+        'piket' => $piket, // Data piket hari ini
+    ]);
+}
 
-        return view('guru.jadwalguru',  compact('user', 'accountname', 'tahun', 'semester', 'jadwals', 'jadwalCount'));
+    public function viewjadwal(Request $request)
+{
+    $user = Auth::user();
+    $accountname = $user->profile;
+    $guruId = auth()->user()->nip;
 
-    }
+    $tahun = Tahun::where('status', 'Aktif')->first();
+    $semester = $tahun->semester;
+
+    // Ambil filter semester dari request, default 'all'
+    $filterSemester = $request->input('semester', 'all');
+
+    // Query jadwal dengan filter
+    $jadwals = Jadwal::where('nip', $guruId)
+                     ->with('kelas', 'mapel', 'tahun')
+                     ->when($filterSemester !== 'all', function ($query) use ($filterSemester) {
+                         $query->whereHas('tahun', function ($q) use ($filterSemester) {
+                             $q->where('semester', $filterSemester);
+                         });
+                     })
+                     ->orderByRaw("
+                        CASE
+                            WHEN hari = 'Senin' THEN 1
+                            WHEN hari = 'Selasa' THEN 2
+                            WHEN hari = 'Rabu' THEN 3
+                            WHEN hari = 'Kamis' THEN 4
+                            WHEN hari = 'Jumat' THEN 5
+                            ELSE 6
+                        END
+                     ")
+                     ->get();
+
+    return view('guru.jadwalguru', compact('user', 'accountname', 'tahun', 'semester', 'jadwals', 'filterSemester'));
+}
+
     function viewjurnal()
     {
         $user = Auth::user();

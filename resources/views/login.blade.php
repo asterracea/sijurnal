@@ -6,13 +6,13 @@
   @vite('resources/css/app.css')
 </head>
 <body class="bg-white">
-    @if($errors->any())
+    {{-- @if($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             @foreach ($errors->all() as $error)
                 <strong class="font-bold">{{ $error }}</strong><br>
             @endforeach
         </div>
-    @endif
+    @endif --}}
 
 
     <section class="min-h-screen  flex box-border justify-center items-center">

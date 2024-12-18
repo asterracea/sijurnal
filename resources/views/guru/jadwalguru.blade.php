@@ -4,7 +4,28 @@
 
 @section('content')
 <main class="p-6 sm:p-10 space-y-6">
-    <h1 class="text-3xl font-bold">Jadwal Pengajaran Anda</h1>
+    <div class="flex justify-between items-center m-4">
+        <div class="relative text-black font-bold text-xl w-auto">
+            <h1>Jadwal Pelajaran Anda</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <!-- Dropdown Filter untuk Kelas -->
+            <select id="filterKelas" onchange="filterData()" class="border border-gray-300 rounded px-8 py-2">
+                <option value="all">Semua Kelas</option>
+                <!-- Loop untuk menampilkan kelas secara dinamis -->
+                @foreach($jadwals->pluck('kelas.nama_kelas')->unique() as $kelas)
+                    <option value="{{ $kelas }}">{{ $kelas }}</option>
+                @endforeach
+            </select>
+
+            <!-- Dropdown Filter untuk Status -->
+            <select id="filterStatus" onchange="filterData()" class="border border-gray-300 rounded px-8 py-2">
+                <option value="all">Semua Status</option>
+                <option value="Aktif">Aktif</option>
+                <option value="Non-Aktif">Tidak Aktif</option>
+            </select>
+        </div>
+    </div>
 
     <div class="container mt-6">
 

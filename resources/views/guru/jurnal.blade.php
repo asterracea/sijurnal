@@ -76,6 +76,7 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="px-4 py-2 border">Tanggal</th>
+                    <th class="px-4 py-2 border">Hari</th>
                     <th class="px-4 py-2 border">Jam Mulai</th>
                     <th class="px-4 py-2 border">Jam Selesai</th>
                     <th class="px-4 py-2 border">Rencana</th>
@@ -89,6 +90,7 @@
                 @foreach ($jurnals as $jurnal)
                     <tr>
                         <td class="px-4 py-2 border">{{ $jurnal->tanggal }}</td>
+                        <td class="px-4 py-2 border">{{ $jurnal->hari }}</td>
                         <td class="px-4 py-2 border">{{ $jurnal->jam_mulai }}</td>
                         <td class="px-4 py-2 border">{{ $jurnal->jam_selesai }}</td>
                         <td class="px-4 py-2 border">{{ $jurnal->rencana }}</td>

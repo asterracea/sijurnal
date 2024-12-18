@@ -18,7 +18,7 @@
                     <span class="sr-only">User Menu</span>
                     <div class="hidden md:flex md:flex-col md:items-end md:leading-tight">
                         <span class="font-semibold">
-                            {{-- {{ $accountname->nama_guru }} --}}
+                            {{ Auth::user()->dataguru->nama_guru }}
                         </span>
                         <span class="text-sm text-gray-600">
                             {{ Auth::user()->role }}
