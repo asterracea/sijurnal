@@ -27,9 +27,6 @@
                     <option value="Non-Aktif">Tidak Aktif</option>
                 </select>
 
-                <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
-                    Create
-                </button>
             </div>
         </div>
 
@@ -55,7 +52,7 @@
                         <td class="p-5">{{ $item->tahun->semester }}</td>
                         <td class="p-5">{{ $item->kelas->nama_kelas }}</td>
                         <td class="p-5">{{ $item->mapel->nama_mapel }}</td>
-                        <td class="p-5">{{ $item->hari }}</td>
+                        <td class="p-5">{{ $item->hari}}</td>
                         <td class="p-5">{{ $item->jam_mulai }}</td>
                         <td class="p-5">{{ $item->jam_selesai }}</td>
                         <td class="p-5">{{ $item->tahun->status }}</td>

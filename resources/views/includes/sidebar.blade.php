@@ -23,7 +23,7 @@
     </script>
 </head>
 <body>
-    <div class="flex">
+    <div id="sidebar" class="flex">
         <div class="w-64 min-h-screen bg-white text-gray-800 p-5">
             <div class="py-3 flex justify-center items-center">
                 <img src="{{ asset('img/logo_gamaliel.png') }}" class="w-28 h-28" />

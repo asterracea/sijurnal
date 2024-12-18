@@ -27,9 +27,6 @@
                     <option value="Non-Aktif">Tidak Aktif</option>
                 </select>
 
-                <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
-                    Create
-                </button>
             </div>
         </div>
 
