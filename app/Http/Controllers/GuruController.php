@@ -16,48 +16,28 @@ use App\Models\GuruPiket;
 class GuruController extends Controller
 {
     public function index()
-{
-    $user = Auth::user();
-    $guruId = auth()->user()->nip; // NIP guru yang login
+    {
+        $user = Auth::user();
+        $guruId = auth()->user()->nip;
+        $tahun = Tahun::where('status', 'Aktif')->first();
+        $semester = $tahun ? $tahun->semester : 'Tidak ada';
+        Carbon::setLocale('id');
+        $today = Carbon::now()->translatedFormat('l'); // Nama hari dalam bahasa Indonesia
 
-    // Ambil data tahun aktif
-    $tahun = Tahun::where('status', 'Aktif')->first();
-    $semester = $tahun ? $tahun->semester : 'Tidak ada';
+        // Ambil data guru piket hari ini
+        $piket = GuruPiket::where('nip', $guruId)
+                    ->where('hari', $today)
+                    ->first();
 
-    // Hari saat ini
-    Carbon::setLocale('id');
-    $today = Carbon::now()->translatedFormat('l'); // Nama hari dalam bahasa Indonesia (Senin, Selasa, dst)
+                    $jurnals = Jurnal::with(['jadwal', 'jadwal.kelas', 'jadwal.mapel'])  // Pastikan relasi di model sudah benar
+                    ->where('status', 'pending')
+                    ->get();
+        // Hitung jumlah jurnal dengan status pending
+        $jumlahPending = $jurnals->count();
 
-    // Query: Cek apakah guru piket pada hari ini
-    $piket = GuruPiket::where('nip', $guruId)
-                ->where('hari', $today) // Cek berdasarkan hari saja
-                ->first();
-
-    // Jika guru piket
-    $jurnals = [];
-    if ($piket) {
-        // Ambil jurnal kosong berdasarkan hari ini dan guru yang sedang piket
-        $jurnals = Jurnal::where('nip', $guruId)
-     ->where(function($query) {
-         $query->whereNull('rencana')->orWhere('rencana', '')
-               ->orWhereNull('realisasi')->orWhere('realisasi', '')
-               ->orWhereNull('foto')->orWhere('foto', '');
-     })
-     ->whereDate('tanggal', Carbon::now()->toDateString()) // Cek tanggal
-     ->get();
-
+        return view('guru.dashboard', compact('jurnals', 'piket', 'today', 'tahun', 'semester', 'jumlahPending'));
     }
 
-    // Return view dengan data yang sesuai
-    return view('guru.dashboard', [
-        'user' => $user,
-        'tahun' => $tahun,
-        'semester' => $semester,
-        'jurnals' => $jurnals,
-        'today' => $today,
-        'piket' => $piket, // Data piket hari ini
-    ]);
-}
 
     public function viewjadwal(Request $request)
 {
@@ -123,6 +103,29 @@ class GuruController extends Controller
 
         // Kirim data ke view
         return view('guru.jurnal', compact('tahunAjaran','kelas','accountname','jurnals','jadwals','today','jadwalstoday'));
+    }
+
+    function jurnalpiket()
+    {
+        $user = Auth::user();
+        $guruId = auth()->user()->nip;
+        $tahun = Tahun::where('status', 'Aktif')->first();
+        $semester = $tahun ? $tahun->semester : 'Tidak ada';
+        Carbon::setLocale('id');
+        $today = Carbon::now()->translatedFormat('l'); // Nama hari dalam bahasa Indonesia
+
+        // Ambil data guru piket hari ini
+        $piket = GuruPiket::where('nip', $guruId)
+                    ->where('hari', $today)
+                    ->first();
+
+                    $jurnals = Jurnal::with(['jadwal', 'jadwal.kelas', 'jadwal.mapel'])  // Pastikan relasi di model sudah benar
+                    ->where('status', 'pending')
+                    ->get();
+        // Hitung jumlah jurnal dengan status pending
+        $jumlahPending = $jurnals->count();
+
+        return view('guru.jurnalpiket', compact('jurnals', 'piket', 'today', 'tahun', 'semester', 'jumlahPending'));
     }
 
     public function store(Request $request)
@@ -201,7 +204,7 @@ class GuruController extends Controller
         $jurnal = Jurnal::with('jadwal') // Ambil data jurnal beserta relasi jadwal
                         ->where('id_jurnal', $id_jurnal) // Cari berdasarkan id_jurnal
                         ->firstOrFail(); // Jika tidak ditemukan, tampilkan 404
-                        dd($jurnal);
+                        // dd($jurnal);
         // Ambil semua jadwal untuk digunakan dalam dropdown di form edit
          $jadwals = Jadwal::all();
 
@@ -238,4 +241,41 @@ class GuruController extends Controller
         return redirect()->back()->with('success', 'Jurnal berhasil diperbarui');
 
     }
+
+    public function updatejurnalpiket(Request $request, $id_jurnal)
+{
+    // Menemukan jurnal berdasarkan ID
+    $jurnal = Jurnal::findOrFail($id_jurnal);
+
+    // Validasi data yang diterima dari form
+    $validatedData = $request->validate([
+        'hari' => 'required|string',
+        'tanggal' => 'required|date',
+        'jam_mulai' => 'required',
+        'jam_selesai' => 'required',
+        'rencana' => 'required|string',
+        'realisasi' => 'required|string',
+        'foto' => 'nullable|image|max:1024',
+    ]);
+
+    // Cek apakah ada file foto yang di-upload
+    if ($request->hasFile('foto')) {
+        // Proses upload dan simpan path foto
+        $filePath = $request->file('foto')->store('uploads', 'public');
+        $validatedData['foto'] = $filePath; // Simpan path foto yang baru
+    }
+
+    // Hanya update jurnal jika statusnya 'pending'
+    if ($jurnal->status === 'pending') {
+        // Ubah status menjadi 'success'
+        $jurnal->status = 'success';
+    }
+
+    // Simpan perubahan data jurnal
+    $jurnal->update($validatedData);
+
+    // Redirect kembali dengan pesan sukses
+    return redirect()->back()->with('success', 'Jurnal berhasil diperbarui');
+}
+
 }
