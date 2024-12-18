@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use App\Models\DataGuru;
-
+use App\Models\GuruPiket;
 use Illuminate\Database\Eloquent\Model;
 
 class Jadwal extends Model
@@ -50,5 +50,14 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Profile::class, 'nip');
     }
+    public function piket()
+    {
+    return $this->hasOne(GuruPiket::class, 'hari', 'hari');
+    }
+    public function jurnals()
+{
+    return $this->hasMany(Jurnal::class, 'id_jadwal', 'id_jadwal');
+}
+
 
 }

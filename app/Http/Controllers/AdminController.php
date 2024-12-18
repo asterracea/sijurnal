@@ -8,22 +8,30 @@ use Illuminate\Http\Request;
 use App\Models\Tahun;
 use App\Models\DataGuru;
 use App\Models\User;
+use App\Models\Jurnal;
+use App\Models\Kelas;
+use App\Models\Mapel;
+use App\Models\Jadwal;
 
 class AdminController extends Controller
 {
     public function index()
-    {
-        $user = Auth::user();
-        $accountname = $user->profile;
-        $tahun = Tahun::where('status', 'Aktif')->first();
-        $semester = $tahun->semester;
-        $guruCount = User::where('role', 'guru')->count(); // Jumlah guru
-        $guruPiketCount = GuruPiket::where('id_tahun', $tahun->id_tahun)->count();
-        return view('admin.dashboard',  compact('user', 'accountname', 'tahun', 'semester', 'guruCount', 'guruPiketCount'));
-        $accountname = $user->profile;
-        return view('admin.dashboard',  compact('user', 'accountname'));
-        return view('includes.header',  compact('user', 'accountname'));
-    }
+{
+    $gurus = DataGuru::all();
+    $tahun = Tahun::all();
+    $kelas = Kelas::all();
+    $mapel = Mapel::all();
+    $jadwal = Jadwal::all();
+    $jurnal = Jurnal::all();
+    $user = Auth::user();
+    $accountname = $user->profile;
+    $tahun = Tahun::where('status', 'Aktif')->first();
+    $semester = $tahun ? $tahun->semester : 'Tidak ada';
+    $guruCount = User::where('role', 'guru')->count(); // Jumlah guru
+    $guruPiketCount = GuruPiket::where('id_tahun', $tahun->id_tahun ?? null)->count();
+
+    return view('admin.dashboard', compact('user', 'accountname', 'tahun', 'semester', 'guruCount', 'guruPiketCount', 'jurnal'));
+}
 
     public function datapiket(){
         $gurus = DataGuru::all();
@@ -78,7 +86,6 @@ public function updatepiket(Request $request, $id)
     }
     public function viewjurnal(){
         $user = Auth::user();
-        $accountname = $user->profile;
         $accountname = $user->profile;
         return view('admin.datajurnal', compact('accountname'));
     }

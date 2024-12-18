@@ -71,15 +71,38 @@
     </div>
   </div>
 
-    {{-- content --}}
-    <div class="bg-white shadow-md rounded-xl overflow-hidden">
-        <div class="flex justify-between items-center m-4">
-            <div class="relative text-black font-bold text-xl w-auto">
-                <h1>Jurnal Guru</h1>
-            </div>
-
-        </div>
-    </div>
+  <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+    <thead>
+        <tr class="bg-gray-100">
+            <th class="px-4 py-2 border">Nama Guru</th>
+            <th class="px-4 py-2 border">Tanggal</th>
+            <th class="px-4 py-2 border">Jam Mulai</th>
+            <th class="px-4 py-2 border">Jam Selesai</th>
+            <th class="px-4 py-2 border">Rencana</th>
+            <th class="px-4 py-2 border">Realisasi</th>
+            <th class="px-4 py-2 border">Kelas</th>
+            <th class="px-4 py-2 border">Mata Pelajaran</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse ($jurnal as $jurnals)
+            <tr>
+                <td class="px-4 py-2 border">{{ $jurnals->gurus->nama_guru }}</td>
+                <td class="px-4 py-2 border">{{ $jurnals->tanggal }}</td>
+                <td class="px-4 py-2 border">{{ $jurnals->jam_mulai }}</td>
+                <td class="px-4 py-2 border">{{ $jurnals->jam_selesai }}</td>
+                <td class="px-4 py-2 border">{{ $jurnals->rencana }}</td>
+                <td class="px-4 py-2 border">{{ $jurnals->realisasi }}</td>
+                <td class="px-4 py-2 border">{{ $jurnals->jadwal->kelas->nama_kelas ?? 'Tidak tersedia' }}</td>
+                <td class="px-4 py-2 border">{{ $jurnals->jadwal->mapel->nama_mapel ?? 'Tidak tersedia' }}</td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="7" class="text-center px-4 py-2 border">Data jurnal tidak ditemukan.</td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
 </body>
 </html>
 @endsection

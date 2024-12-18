@@ -92,8 +92,14 @@
                             <a href="{{ route('guru/home') }}" class="block text-md font-bold hover:text-white">Dashboard</a>
                         </li>
                         <li class="p-3 rounded-md hover:bg-blue-500">
-                            <a href="{{ route('guru/jurnal') }}" class="block text-md font-bold hover:text-white">Jurnal</a>
+                            <a href="{{ route('guru/jadwalguru') }}" class="block text-md font-bold hover:text-white">Jadwal Guru</a>
                         </li>
+                        <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('guru/jurnal') }}" class="block text-md font-bold hover:text-white">Jurnal Guru Mapel</a>
+                        </li>
+                        {{-- <li class="p-3 rounded-md hover:bg-blue-500">
+                            <a href="{{ route('guru/jurnal') }}" class="block text-md font-bold hover:text-white">Jurnal Guru Piket</a>
+                        </li> --}}
                     @endif
                     @if (auth()->user()->role === 'guru_piket')
                         <li class="p-3 rounded-md hover:bg-blue-500">

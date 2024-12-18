@@ -29,4 +29,9 @@ class GuruPiket extends Model
     {
         return $this->belongsTo(Tahun::class, 'id_tahun', 'id_tahun');
     }
+    public function jadwal()
+    {
+    return $this->belongsTo(Jadwal::class, 'hari', 'hari');
+    }
+
 }

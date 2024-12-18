@@ -10,7 +10,7 @@
             <div class="relative text-black font-bold text-xl w-auto">
                 <h1>Mata Pelajaran</h1>
             </div>
-            <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
+            <button onclick="openModalMapel()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
                 Create
             </button>
         </div>
@@ -62,15 +62,37 @@
             @csrf
             <div class="mb-4">
                 <label for="nama_mapel" class="block text-sm font-semibold">Mata Pelajaran</label>
-                <input type="text" name="nama_mapel" id="nama_mapel" class="w-full px-3 py-2 border rounded" required>
+                <input
+                    type="text"
+                    name="nama_mapel"
+                    id="nama_mapel"
+                    class="w-full px-3 py-2 border rounded"
+                    placeholder="Contoh: Bahasa Inggris"
+                    required
+                >
+                <p class="text-sm text-gray-500 mt-1">
+                    Masukkan nama mata pelajaran, misalnya "Bahasa Inggris".
+                </p>
             </div>
             <div class="flex justify-end space-x-4">
-                <button type="button" onclick="resetAndCloseModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                <button
+                    type="button"
+                    onclick="resetAndCloseModal()"
+                    class="bg-gray-500 text-white px-4 py-2 rounded"
+                >
+                    Batal
+                </button>
+                <button
+                    type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                    Save
+                </button>
             </div>
         </form>
     </div>
 </div>
+
 
 <!-- Modal Edit -->
 <div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden flex justify-center items-center">
@@ -88,7 +110,7 @@
 
             <!-- Tombol Submit -->
             <div class="flex justify-end space-x-4">
-                <button type="button" onclick="closeModal('edit-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <button type="button" onclick="closeModalMapel('edit-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
             </div>
         </form>
@@ -104,7 +126,7 @@
             @csrf
             @method('DELETE')
             <div class="flex justify-end space-x-4">
-                <button type="button" onclick="closeModal('delete-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <button type="button" onclick="closeModalMapel('delete-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                 <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Hapus</button>
             </div>
         </form>
@@ -155,7 +177,7 @@
         document.getElementById('delete-modal').classList.remove('hidden'); // Show the delete modal
     }
 
-    function openModal() {
+    function openModalMapel() {
         resetAndCloseModal();
         document.getElementById('modal').classList.remove('hidden');
         const modal = document.getElementById('modal');
@@ -163,7 +185,7 @@
         modal.classList.add('flex');
     }
 
-    function closeModal(modalId) {
+    function closeModalMapel(modalId) {
         document.getElementById(modalId).classList.add('hidden');
     }
 

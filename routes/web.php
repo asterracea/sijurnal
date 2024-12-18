@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('wellcome');
 
         // Data Guru
-        Route::get('/dataguru', [AdminController::class, 'dataguru'])->name('dataguru');
+        //Route::get('/dataguru', [AdminController::class, 'dataguru'])->name('dataguru');
         // Route::get('/create-dataguru', [CreateDataGuruController::class, 'create'])->name('create_dataguru');
         // Route::post('/store-dataguru', [CreateDataGuruController::class, 'store'])->name('store_dataguru');
 
@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
         //admin
         //Route::get('/dashboard', [AdminController::class, 'index'])->middleware('RoleMiddleware:admin')->name('wellcome');
         //Route::get('/admin/dataguru', [AdminController::class, 'dataguru'])->middleware('RoleMiddleware:admin')->name('dataguru');
-        //Route::get('/admin/dataguru', [DataGuruController::class, 'index'])->name('dataguru');
+        Route::get('/admin/dataguru', [DataGuruController::class, 'index'])->name('dataguru');
         Route::post('/dataguru/store', [DataGuruController::class, 'store'])->name('dataguru.store');
         Route::get('/dataguru/{nip}/edit', [DataGuruController::class, 'edit'])->name('dataguru.edit');
         Route::put('/dataguru/{nip}', [DataGuruController::class, 'update'])->name('dataguru.update');
@@ -130,8 +130,11 @@ Route::middleware(['auth'])->group(function () {
         // Jurnal
         Route::get('/jurnal', [GuruController::class, 'viewjurnal'])->name('guru/jurnal');
         Route::post('/jurnal', [GuruController::class, 'store'])->name('jurnal.store');
+
+        Route::get('/jadwalguru', [GuruController::class, 'viewjadwal'])->name('guru/jadwalguru');
         Route::get('/jurnal/edit/{id_jurnal}', [GuruController::class, 'edit'])->name('guru.editjurnal');
         Route::put('/jurnal/update/{id_jurnal}', [GuruController::class, 'update'])->name('guru.updatejurnal');
+
     });
     Route::get('/guru/home', [GuruController::class, 'index'])->middleware('RoleMiddleware:guru')->name('guru/home');
     Route::get('/guru/formjurnal', [FormJurnalController::class, 'index'])->middleware('RoleMiddleware:guru')->name('formjurnal');

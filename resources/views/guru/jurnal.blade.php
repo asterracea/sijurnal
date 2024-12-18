@@ -17,7 +17,7 @@
             <strong>Success:</strong> {{ session('success') }}
         </div>
     @endif
-   
+
     <div class="bg-white shadow-md rounded-xl overflow-hidden">
         <div class="flex justify-between items-center m-4">
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-full">
@@ -26,18 +26,18 @@
                   <!-- Tahun Ajaran -->
                   <select id="tahunAjaran" class="w-1/4 px-4 py-2 text-sm bg-gray-700 text-white rounded-lg">
                     @foreach ($tahunAjaran as $tahun)
-                        <option 
+                        <option
                         class="w-1/4 px-4 py-2 text-sm bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none"
                         value="{{$tahun->id_tahun}}">{{ $tahun->tahun_ajaran }} {{ $tahun->semester }}</option>
                     @endforeach
                   </select>
                   <select id="kelas" class="w-1/4 px-4 py-2 text-sm bg-gray-700 text-white rounded-lg">
                     @foreach ($kelas as $kelas)
-                        <option 
+                        <option
                         class="w-1/4 px-4 py-2 text-sm bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none"
                         value="{{$kelas->id_kelas}}">{{ $kelas->nama_kelas }}</option>
                     @endforeach
-                  </select>            
+                  </select>
                   <!-- Mata Pelajaran -->
                   <input
                     type="text"
@@ -46,7 +46,7 @@
                     id="mataPelajaran"
                   />
                 </div>
-            
+
                 <!-- Tombol Aksi -->
                 <div class="flex gap-4">
                   <button
@@ -58,7 +58,7 @@
                   <button
                     class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
                     id="openModal"
-                    
+
                   >
                     Isi Jurnal Baru
                   </button>
@@ -71,7 +71,7 @@
                 </div>
             </div>
         </div>
-        
+
         <table class="min-w-full bg-white border border-gray-300 rounded-lg">
             <thead>
                 <tr class="bg-gray-100">
@@ -97,10 +97,10 @@
                         <td class="px-4 py-2 border">{{ $jurnal->jadwal->mapel->nama_mapel }}</td> <!-- Nama mata pelajaran dari relasi jadwal.mapel -->
                         <td class="px-4 py-2 border text-center">
                             <!-- Tombol dengan ikon edit -->
-                            <button 
-                                class="text-blue-500 edit-button" 
+                            <button
+                                class="text-blue-500 edit-button"
                                 onclick="openEditModal('{{ $jurnal->id_jurnal }}', '{{ $jurnal->jadwal->hari }}','{{ $jurnal->tanggal }}','{{ $jurnal->jadwal->mapel->nama_mapel }}','{{ $jurnal->jam_mulai }}', '{{ $jurnal->jam_selesai }}', '{{ $jurnal->rencana }}', '{{ $jurnal->realisasi }}',  '{{ asset('storage/' . $jurnal->foto) }}')">
-              
+
                                 Edit
                             </button>
                         </td>
@@ -139,9 +139,9 @@
                                 </option>
                             @endforeach
                         </select>
-                        
+
                     </div>
-                    
+
                     <div class="mb-4">
                         <label for="jam_mulai" class="block text-sm font-semibold">Jam Mulai</label>
                         <input type="time" name="jam_mulai" id="jam_mulai" class="w-full px-3 py-2 border rounded" required>
@@ -150,21 +150,21 @@
                         <label for="jam_selesai" class="block text-sm font-semibold">Jam Selesai</label>
                         <input type="time" name="jam_selesai" id="jam_selesai" class="w-full px-3 py-2 border rounded" required>
                     </div>
-                    
-                    
+
+
 
                     <!-- Rencana -->
                     <div class="mb-2">
                         <label for="rencana" class="text-sm font-medium text-gray-700">Rencana</label>
                         <textarea id="rencana" name="rencana" class="w-full p-2 border rounded-lg mt-1" required></textarea>
                     </div>
-    
+
                     <!-- Realisasi -->
                     <div class="mb-2">
                         <label for="realisasi" class="text-sm font-medium text-gray-700">Realisasi</label>
                         <textarea id="realisasi" name="realisasi" class="w-full p-2 border rounded-lg mt-1" required></textarea>
                     </div>
-    
+
                     <!-- Foto -->
                     <div class="mb-4">
                         <label for="foto" class="text-sm font-medium text-gray-700">Foto Kegiatan <span class="text-red-500">*</span></label>
@@ -182,7 +182,7 @@
                     </div>
                 </div>
 
-    
+
                 <!-- Tombol Submit -->
                 <div class="flex justify-end mt-6">
                     <button type="submit" class="px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
@@ -190,7 +190,7 @@
                     </button>
                 </div>
             </form>
-    
+
             <!-- Tombol Tutup Modal -->
             <button id="closeModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                 <i class="fa-solid fa-xmark"></i>
@@ -280,7 +280,7 @@
     // Mengubah array hari dalam bahasa Indonesia
     const daysOfWeek = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
     const dayName = daysOfWeek[today.getDay()]; // Mengambil hari dalam bentuk string (e.g., "Senin")
-    
+
     // Menampilkan nama hari di input "hari"
     hariInput.value = dayName;
 
@@ -350,7 +350,7 @@
         }
     }
     }
-    
+
     // Fungsi untuk membuka modal edit
     function openEditModal(id_jurnal, hari, tanggal, nama_mapel,jam_mulai, jam_selesai, rencana, realisasi, foto) {
         // Mengisi input di dalam modal dengan data yang diterima
@@ -373,7 +373,7 @@
     document.getElementById('closeEditModal').onclick = function() {
         document.getElementById('editModal').classList.add('hidden');
     };
-    
+
 
 </script>
 @endsection

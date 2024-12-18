@@ -21,32 +21,48 @@ class CreateJadwalController extends Controller
     $mapel = Mapel::all();
     $jadwal = Jadwal::all();
     $user = Auth::user();
-    $accountname = $user->profile; 
+    $accountname = $user->profile;
 
     return view('admin.datajadwal', compact('gurus', 'tahun', 'kelas', 'mapel', 'jadwal','accountname'));
 }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'nip' => 'required|exists:tb_guru,nip',
-        'id_tahun' => 'required|exists:tb_tahun,id_tahun',
-        'id_kelas' => 'required|exists:tb_kelas,id_kelas',
-        'id_mapel' => 'required|exists:tb_mapel,id_mapel',
-    ]);
+    {
+        // Validasi input
+        $request->validate([
+            'nip' => 'required|exists:tb_guru,nip',
+            'id_tahun' => 'required|exists:tb_tahun,id_tahun',
+            'id_kelas' => 'required|exists:tb_kelas,id_kelas',
+            'id_mapel' => 'required|exists:tb_mapel,id_mapel',
+        ]);
 
-    $jadwal = new Jadwal();
-    $jadwal->nip = $request->nip;
-    $jadwal->id_tahun = $request->id_tahun;
-    $jadwal->id_kelas = $request->id_kelas;
-    $jadwal->id_mapel = $request->id_mapel;
-    $jadwal->hari = $request->hari;
-    $jadwal->jam_mulai = $request->jam_mulai;
-    $jadwal->jam_selesai = $request->jam_selesai;
-    $jadwal->save();
+        // Cek duplikasi data
+        $exists = Jadwal::where('nip', $request->nip)
+                        ->where('id_tahun', $request->id_tahun)
+                        ->where('id_kelas', $request->id_kelas)
+                        ->where('id_mapel', $request->id_mapel)
+                        ->where('hari', $request->hari)
+                        ->where('jam_mulai', $request->jam_mulai)
+                        ->where('jam_selesai', $request->jam_selesai)
+                        ->exists();
 
-    return redirect()->route('datajadwal')->with('success', 'Jadwal berhasil ditambahkan!');
-}
+        if ($exists) {
+            return redirect()->back()->withErrors(['error' => 'Data jadwal sudah ada!']);
+        }
+
+        // Simpan data jika tidak ada duplikasi
+        $jadwal = new Jadwal();
+        $jadwal->nip = $request->nip;
+        $jadwal->id_tahun = $request->id_tahun;
+        $jadwal->id_kelas = $request->id_kelas;
+        $jadwal->id_mapel = $request->id_mapel;
+        $jadwal->hari = $request->hari;
+        $jadwal->jam_mulai = $request->jam_mulai;
+        $jadwal->jam_selesai = $request->jam_selesai;
+        $jadwal->save();
+
+        return redirect()->route('datajadwal')->with('success', 'Jadwal berhasil ditambahkan!');
+    }
 
 public function update(Request $request, $id)
 {

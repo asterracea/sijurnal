@@ -88,7 +88,7 @@ class AuthController extends Controller
             'email' => 'Email atau password salah.',
         ])->withInput();
     }
-
+    }
     // Fungsi logout
     public function logout(Request $request)
     {

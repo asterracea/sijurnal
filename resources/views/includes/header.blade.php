@@ -9,6 +9,7 @@
 </head>
 <body>
     <header class="bg-white p-4 shadow-md text-gray-500 rounded-xl z-0 ">
+
         <div class="container mx-auto flex justify-between items-center">
             <div class="relative text-gray-500 focus-within:text-gray-900 w-auto">
             </div>
@@ -24,7 +25,7 @@
                         </span>
                     </div>
                     <span class="h-12 w-12 ml-2 sm:ml-3 mr-2 bg-gray-100  overflow-hidden">
-                      <img src="{{ asset('img/logo_gamaliel.png') }}" alt="user profile photo" class="h-full w-full ">
+                      <img src="{{ asset('img/user.png') }}" alt="user profile photo" class="h-full w-full ">
                     </span>
                 </button>
                 <div class="border-l pl-3 ml-3 space-x-1">

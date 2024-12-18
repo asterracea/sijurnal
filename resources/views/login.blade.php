@@ -6,27 +6,36 @@
   @vite('resources/css/app.css')
 </head>
 <body class="bg-white">
+    @if($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            @foreach ($errors->all() as $error)
+                <strong class="font-bold">{{ $error }}</strong><br>
+            @endforeach
+        </div>
+    @endif
+
+
     <section class="min-h-screen  flex box-border justify-center items-center">
-    <div class="bg-gray-100 bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-md rounded-2xl flex max-w-3xl p-5 items-center">
-        <div class="md:w-1/2 px-8">
-            <h2 class="font-bold text-3xl text-[#002D74]">Login</h2>
-            <p class="text-sm mt-4 text-[#002D74]">If you already a member, easily log in now.</p>
+        <div class="bg-gray-100 bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-md rounded-2xl flex max-w-3xl p-5 items-center">
+            <div class="md:w-1/2 px-8">
+                <h2 class="font-bold text-3xl text-[#002D74]">Login</h2>
+                <p class="text-sm mt-4 text-[#002D74]">Jurnal Guru</p>
 
-            <form action="{{ route('login') }}" method="POST" class="flex flex-col gap-4">
-                @csrf
-                <input class="p-2 mt-8 rounded-xl border" type="email" id="email" name="email" value="{{old('email')}}" placeholder="Email" required>
-                <div class="relative mb-8">
-                    <input class="p-2 rounded-xl border w-full" type="password" name="password" id="password" placeholder="Password" required>
-                </div>
+                <form action="{{ route('login') }}" method="POST" class="flex flex-col gap-4">
+                    @csrf
+                    <input class="p-2 mt-8 rounded-xl border" type="email" id="email" name="email" value="{{old('email')}}" placeholder="Email" required>
+                    <div class="relative">
+                        <input class="p-2 rounded-xl border w-full" type="password" name="password" id="password" placeholder="Password" required>
+                    </div>
 
-                <button class="bg-[#002D74] text-white py-2 rounded-xl hover:scale-105 duration-300 hover:bg-[#206ab1] font-medium" type="submit">Login</button>
+                    <button class="bg-[#002D74] text-white py-2 rounded-xl hover:scale-105 duration-300 hover:bg-[#206ab1] font-medium" type="submit">Login</button>
 
-            </form>
+                </form>
 
-        </div>
-        <div class="md:block hidden w-1/2">
-            <img class="rounded-2xl max-h-[1600px]" src="https://images.unsplash.com/photo-1552010099-5dc86fcfaa38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxmcmVzaHxlbnwwfDF8fHwxNzEyMTU4MDk0fDA&ixlib=rb-4.0.3&q=80&w=1080" alt="login form image">
-        </div>
+            </div>
+            <div class="md:block hidden w-1/2">
+                <img class="rounded-2xl max-h-[300px]" src="{{ asset('img/logo_gamaliel.png') }}" alt="login form image">
+            </div>
         </div>
     </section>
     @if($errors->any() || session('account_inactive') || session('error'))

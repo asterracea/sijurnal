@@ -17,7 +17,7 @@
                     <option value="Aktif">Aktif</option>
                     <option value="Tidak Aktif">Tidak Aktif</option>
                 </select>
-                <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
+                <button onclick="openModalJadwal()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
                     Create
                 </button>
             </div>
@@ -212,7 +212,7 @@
 
             <!-- Tombol Submit -->
             <div class="flex justify-end space-x-4">
-                <button type="button" onclick="closeModal('edit-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <button type="button" onclick="closeModalJadwal('edit-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
             </div>
         </form>
@@ -275,7 +275,7 @@
         document.getElementById('delete-modal').classList.remove('hidden');
     }
 
-    function openModal() {
+    function openModalJadwal() {
         resetAndCloseModal();
         document.getElementById('modal').classList.remove('hidden');
         const modal = document.getElementById('modal');
@@ -283,7 +283,7 @@
         modal.classList.add('flex');
     }
 
-    function closeModal(modalId) {
+    function closeModalJadwal(modalId) {
         document.getElementById(modalId).classList.add('hidden');
     }
 

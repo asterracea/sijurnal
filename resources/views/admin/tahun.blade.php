@@ -17,7 +17,7 @@
                     <option value="Aktif">Aktif</option>
                     <option value="Tidak Aktif">Tidak Aktif</option>
                 </select>
-                <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
+                <button onclick="openModalTahun()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
                     Create
                 </button>
             </div>
@@ -74,29 +74,61 @@
             @csrf
             <div class="mb-4">
                 <label for="tahun_ajaran" class="block text-sm font-semibold">Tahun Ajaran</label>
-                <input type="text" name="tahun_ajaran" id="tahun_ajaran" class="w-full px-3 py-2 border rounded" required>
+                <input
+                    type="text"
+                    name="tahun_ajaran"
+                    id="tahun_ajaran"
+                    class="w-full px-3 py-2 border rounded"
+                    placeholder="Masukkan tahun ajaran, contoh: 2023/2024"
+                    required
+                >
             </div>
             <div class="mb-4">
                 <label for="semester" class="block text-sm font-semibold">Semester</label>
-                <select name="semester" id="semester" class="w-full px-3 py-2 border rounded" required>
+                <select
+                    name="semester"
+                    id="semester"
+                    class="w-full px-3 py-2 border rounded"
+                    required
+                >
+                    <option value="" disabled selected>Pilih semester</option>
                     <option value="Ganjil">Ganjil</option>
                     <option value="Genap">Genap</option>
                 </select>
+                <p class="text-sm text-gray-500 mt-1">Pilih semester aktif untuk periode ini.</p>
             </div>
             <div class="mb-4">
                 <label for="status" class="block text-sm font-semibold">Status</label>
-                <select name="status" id="status" class="w-full px-3 py-2 border rounded" required>
+                <select
+                    name="status"
+                    id="status"
+                    class="w-full px-3 py-2 border rounded"
+                    required
+                >
+                    <option value="" disabled selected>Pilih status</option>
                     <option value="Aktif">Aktif</option>
                     <option value="Tidak Aktif">Tidak Aktif</option>
                 </select>
             </div>
             <div class="flex justify-end space-x-4">
-                <button type="button" onclick="resetAndCloseModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                <button
+                    type="button"
+                    onclick="resetAndCloseModal()"
+                    class="bg-gray-500 text-white px-4 py-2 rounded"
+                >
+                    Batal
+                </button>
+                <button
+                    type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                    Save
+                </button>
             </div>
         </form>
     </div>
 </div>
+
 
 <!-- Modal Edit -->
 <div id="edit-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden flex justify-center items-center">
@@ -132,7 +164,7 @@
 
             <!-- Tombol Submit -->
             <div class="flex justify-end space-x-4">
-                <button type="button" onclick="closeModal('edit-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <button type="button" onclick="closeModalTahun('edit-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
             </div>
         </form>
@@ -148,7 +180,7 @@
             @csrf
             @method('DELETE')
             <div class="flex justify-end space-x-4">
-                <button type="button" onclick="closeModal('delete-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
+                <button type="button" onclick="closeModalTahun('delete-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
                 <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Hapus</button>
             </div>
         </form>
@@ -215,7 +247,7 @@
         document.getElementById('delete-modal').classList.remove('hidden');
     }
 
-    function openModal() {
+    function openModalTahun() {
         resetAndCloseModal();
         document.getElementById('modal').classList.remove('hidden');
         const modal = document.getElementById('modal');
@@ -223,7 +255,7 @@
         modal.classList.add('flex');
     }
 
-    function closeModal(modalId) {
+    function closeModalTahun(modalId) {
         document.getElementById(modalId).classList.add('hidden');
     }
 

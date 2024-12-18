@@ -16,16 +16,31 @@ class GuruController extends Controller
     {
         $user = Auth::user();
         $accountname = $user->profile;
-        // Mendapatkan NIP dari guru yang sedang login
-        $guruId = auth()->user()->nip; // Mendapatkan NIP guru yang sedang login
-
-        // Mengambil jadwal yang dimiliki oleh guru berdasarkan NIP
-        $jadwals = Jadwal::where('nip', $guruId) // Filter berdasarkan NIP guru
-                         ->with('kelas', 'mapel', 'tahun')  // Menyertakan relasi jadwal dengan kelas, mapel, dan tahun
+        $guruId = auth()->user()->nip;
+        $tahun = Tahun::where('status', 'Aktif')->first();
+        $semester = $tahun->semester;
+        $jadwals = Jadwal::where('nip', $guruId)
+                         ->with('kelas', 'mapel', 'tahun')
                          ->get();
 
-        return view('guru.dashboard',  compact('user', 'accountname','jadwals'));
+        return view('guru.dashboard',  compact('user', 'accountname','jadwals','tahun', 'semester'));
         return view('includes.header',  compact('user','accountname'));
+
+    }
+
+    public function viewjadwal()
+    {
+        $user = Auth::user();
+        $accountname = $user->profile;
+        $guruId = auth()->user()->nip;
+        $tahun = Tahun::where('status', 'Aktif')->first();
+        $semester = $tahun->semester;
+        $jadwals = Jadwal::where('nip', $guruId)
+                         ->with('kelas', 'mapel', 'tahun')
+                         ->get();
+        $jadwalCount = $jadwals->count();
+
+        return view('guru.jadwalguru',  compact('user', 'accountname', 'tahun', 'semester', 'jadwals', 'jadwalCount'));
 
     }
     function viewjurnal()

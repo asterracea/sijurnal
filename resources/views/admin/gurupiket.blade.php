@@ -11,12 +11,6 @@
                 <h1>Jadwal Guru Piket</h1>
             </div>
             <div class="flex items-center space-x-4">
-                <!-- Dropdown Filter -->
-                <select id="statusFilter" class="px-8 py-2 border rounded" onchange="filterStatus()">
-                    <option value="">Semua Status</option>
-                    <option value="Aktif">Aktif</option>
-                    <option value="Tidak Aktif">Tidak Aktif</option>
-                </select>
                 <button onclick="openModalPiket()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out">
                     Create
                 </button>
