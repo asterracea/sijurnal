@@ -22,7 +22,7 @@ class DataGuruController extends Controller
 
         Dataguru::create($validated);
 
-        return redirect()->route('dataguru.index')->with('success', 'Data guru berhasil disimpan.');
+        return redirect()->back()->with('success', 'Data guru berhasil disimpan.');
     }
 
     public function edit($nip)

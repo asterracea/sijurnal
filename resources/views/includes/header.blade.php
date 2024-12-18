@@ -8,27 +8,34 @@
     <title>Sistem Informasi Jurnal Guru</title>
 </head>
 <body>
-    <header class="bg-white p-4 shadow-md text-gray-500 rounded-xl z-0 ">
+    <header class="bg-white p-4 shadow-md text-gray-500 rounded-xl z-0">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <button onclick="toggleSidebar()" class="p-2 rounded-full bg-gray-100 text-gray-700 md:hidden">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="relative text-gray-500 focus-within:text-gray-900 w-auto"></div>
 
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="relative text-gray-500 focus-within:text-gray-900 w-auto">
-            </div>
-            <div class="flex flex-shrink-0 items-center ml-auto">
+            <!-- Bagian Kanan (Profil User & Logout) -->
+            <div class="flex items-center ml-auto space-x-3">
+                <!-- User Menu -->
                 <button class="inline-flex items-center p-2 hover:bg-gray-100 focus:bg-gray-100 rounded-lg">
                     <span class="sr-only">User Menu</span>
-                    <div class="hidden md:flex md:flex-col md:items-end md:leading-tight">
-                        <span class="font-semibold">
+                    <div class="flex flex-col items-end leading-tight">
+                        <span class="font-semibold text-gray-800 text-sm sm:text-base">
                             {{ Auth::user()->dataguru->nama_guru }}
                         </span>
-                        <span class="text-sm text-gray-600">
+                        <span class="text-xs sm:text-sm text-gray-600">
                             {{ Auth::user()->role }}
                         </span>
                     </div>
-                    <span class="h-12 w-12 ml-2 sm:ml-3 mr-2 bg-gray-100  overflow-hidden">
-                      <img src="{{ asset('img/user.png') }}" alt="user profile photo" class="h-full w-full ">
+
+                    <span class="h-8 w-8 ml-2 sm:ml-3 mr-2 bg-gray-100 overflow-hidden rounded-full">
+                        <img src="{{ asset('img/user.png') }}" alt="user profile photo" class="h-full w-full">
                     </span>
                 </button>
-                <div class="border-l pl-3 ml-3 space-x-1">
+
+                <!-- Logout Button -->
+                <div class="border-l pl-3 space-x-1">
                     <button onclick="logoutModal()" class="relative p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:bg-gray-100 focus:text-gray-600 rounded-full">
                         <span class="sr-only">Log out</span>
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -39,6 +46,7 @@
             </div>
         </div>
     </header>
+
 
     <!-- Modal for Logout Confirmation -->
     <div id="logoutModal" class="fixed z-50 inset-0 overflow-y-auto hidden">

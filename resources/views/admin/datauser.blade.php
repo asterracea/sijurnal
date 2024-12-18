@@ -131,7 +131,7 @@
 
             <!-- Buttons -->
             <div class="flex justify-end space-x-2 mt-4">
-                <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                <button type="button" onclick="closeCreateModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
                 <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Create User</button>
             </div>
         </form>
@@ -185,7 +185,9 @@
                 <label for="status" class="block text-gray-700">Status</label>
                 <select name="status" id="editStatus" class="w-full p-2 border border-gray-300 rounded" required>
                     @foreach($statuses as $status)
-                        <option value="{{ $status }}" {{ old('status', $user->status) == $status ? 'selected' : '' }}>{{ ucfirst($status) }}</option>
+                        <option value="{{ $status->name ?? $status }}" {{ old('status', $user->status) == ($status->name ?? $status) ? 'selected' : '' }}>
+                            {{ ucfirst($status->name ?? $status) }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -206,30 +208,7 @@
     </div>
 </div>
 
-{{-- <script>
-    // Fungsi untuk menutup modal
-    function closeEditModal() {
-        document.getElementById('editModal').classList.add('hidden');
-    }
 
-    // Fungsi untuk membuka modal
-    function openEditModal() {
-        document.getElementById('editModal').classList.remove('hidden');
-    }
-</script> --}}
-
-
-<!-- Modal Hapus -->
-<div id="delete-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden flex justify-center items-center">
-    <div class="bg-white rounded-lg w-1/3 p-5">
-        <h2 class="text-xl font-bold mb-4">Konfirmasi Hapus</h2>
-        <p>Apakah Anda yakin ingin menghapus tahun ajaran ini?</p>
-        <div class="flex justify-end space-x-4">
-            <button type="button" onclick="closeModal('delete-modal')" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
-            <button id="confirm-delete" class="bg-red-500 text-white px-4 py-2 rounded">Hapus</button>
-        </div>
-    </div>
-</div>
 <script>
     // Function to open the edit modal and populate the form with current user data
     function openEditModal(id_user, nip, email, password,role, status) {
@@ -253,7 +232,7 @@
         document.getElementById('createModal').classList.remove('hidden');
     }
 
-    function closeModal() {
+    function closeCreateModal() {
         document.getElementById('createModal').classList.add('hidden');
     }
 </script>

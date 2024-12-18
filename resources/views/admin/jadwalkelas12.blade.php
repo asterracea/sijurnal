@@ -51,7 +51,7 @@
                         <td class="p-5">{{ $item->tahun->semester }}</td>
                         <td class="p-5">{{ $item->kelas->nama_kelas }}</td>
                         <td class="p-5">{{ $item->mapel->nama_mapel }}</td>
-                        <td class="p-5">{{ $item->hari }}</td>
+                        <td class="p-5">{{ $item->hari}}</td>
                         <td class="p-5">{{ $item->jam_mulai }}</td>
                         <td class="p-5">{{ $item->jam_selesai }}</td>
                         <td class="p-5">{{ $item->tahun->status }}</td>
