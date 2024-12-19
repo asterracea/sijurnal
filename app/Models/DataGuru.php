@@ -19,5 +19,10 @@ class DataGuru extends Model
     {
         return $this->hasOne(User::class, 'nip', 'nip');
     }
+    public function piket()
+{
+    return $this->hasMany(GuruPiket::class);
+}
+
 }
 

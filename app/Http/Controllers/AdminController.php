@@ -18,11 +18,12 @@ class AdminController extends Controller
     public function index()
 {
     $gurus = DataGuru::all();
+    $piket = GuruPiket::all();
     $tahun = Tahun::all();
     $kelas = Kelas::all();
     $mapel = Mapel::all();
     $jadwal = Jadwal::all();
-    $jurnal = Jurnal::all();
+    $jurnal = Jurnal::with(['piket.guru', 'jadwal.kelas', 'jadwal.mapel'])->get();
     $user = Auth::user();
     $accountname = $user->profile;
     $tahun = Tahun::where('status', 'Aktif')->first();
