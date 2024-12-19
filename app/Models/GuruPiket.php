@@ -33,5 +33,10 @@ class GuruPiket extends Model
     {
     return $this->belongsTo(Jadwal::class, 'hari', 'hari');
     }
+    public function jurnal()
+    {
+    return $this->hasMany(Jurnal::class, 'id_piket', 'id_piket'); // Hubungan kebalikannya
+    }
+
 
 }

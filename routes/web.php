@@ -132,9 +132,8 @@ Route::middleware(['auth'])->group(function () {
         // Jurnal
         Route::get('/jurnal', [GuruController::class, 'viewjurnal'])->name('guru/jurnal');
         Route::get('/jurnalpiket', [GuruController::class, 'jurnalpiket'])->name('guru/jurnalpiket');
-        Route::put('/jurnalpiket/update/{id_jurnal}', [GuruController::class, 'updatejurnalpiket'])->name('guru.updatejurnalpiket');
+        Route::put('/jurnalpiket/updatejurnalpiket/{id_jurnal}', [GuruController::class, 'updatejurnalpiket'])->name('guru.updatejurnalpiket');
         Route::post('/jurnal', [GuruController::class, 'store'])->name('jurnal.store');
-
         Route::get('/jadwalguru', [GuruController::class, 'viewjadwal'])->name('guru/jadwalguru');
         Route::get('/jurnal/edit/{id_jurnal}', [GuruController::class, 'edit'])->name('guru.editjurnal');
         Route::put('/jurnal/update/{id_jurnal}', [GuruController::class, 'update'])->name('guru.updatejurnal');

@@ -143,7 +143,6 @@
                         </select>
 
                     </div>
-
                     <div class="mb-4">
                         <label for="jam_mulai" class="block text-sm font-semibold">Jam Mulai</label>
                         <input type="time" name="jam_mulai" id="jam_mulai" class="w-full px-3 py-2 border rounded" required>
@@ -204,7 +203,7 @@
         <div class="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[80vh] mx-4 overflow-auto">
             <h3 class="text-xl font-semibold mb-6 text-center">Edit Jurnal Harian Mengajar</h3>
 
-            <form method="POST" id="edit-formjurnal" action="{{ route('guru.updatejurnal', $jurnal->id_jurnal) }}" enctype="multipart/form-data">
+            <form method="POST" id="edit-formjurnal" action="{{ isset($jurnal) ? route('guru.updatejurnal', $jurnal->id_jurnal) : '#' }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -212,31 +211,31 @@
                     <!-- Hari -->
                     <div class="mb-2">
                         <label for="hari" class="text-sm font-medium text-gray-700">Hari</label>
-                        <input type="text" id="edit_hari" name="hari" value="{{ $jurnal->hari }}" class="w-full p-2 border rounded-lg mt-1 bg-gray-100" readonly>
+                        <input type="text" id="edit_hari" name="hari" class="w-full p-2 border rounded-lg mt-1 bg-gray-100" readonly>
                     </div>
 
                     <!-- Tanggal -->
                     <div class="mb-2">
                         <label for="tanggal" class="text-sm font-medium text-gray-700">Tanggal</label>
-                        <input type="date" id="edit_tanggal" name="tanggal" value="{{ $jurnal->tanggal }}" class="w-full p-2 border rounded-lg mt-1 bg-gray-100" readonly>
+                        <input type="date" id="edit_tanggal" name="tanggal" class="w-full p-2 border rounded-lg mt-1 bg-gray-100" readonly>
                     </div>
 
                     <!-- Mata Pelajaran -->
                     <div class="mb-2">
                         <label for="mapel" class="text-sm font-medium text-gray-700">Mata Pelajaran</label>
-                        <input type="text" id="edit_mapel" name="mapel" value="{{ $jurnal->jadwal->mapel->nama_mapel }}" class="w-full p-2 border rounded-lg mt-1 bg-gray-100" readonly>
+                        <input type="text" id="edit_mapel" name="mapel" class="w-full p-2 border rounded-lg mt-1 bg-gray-100" readonly>
                     </div>
 
                     <!-- Jam Mulai -->
                     <div class="mb-4">
                         <label for="jam_mulai" class="block text-sm font-medium text-gray-700">Jam Mulai</label>
-                        <input type="time" id="edit_jam_mulai" name="jam_mulai" value="{{ $jurnal->jadwal->jam_mulai }}" class="w-full px-3 py-2 border rounded bg-gray-100" readonly>
+                        <input type="time" id="edit_jam_mulai" name="jam_mulai" class="w-full px-3 py-2 border rounded bg-gray-100" readonly>
                     </div>
 
                     <!-- Jam Selesai -->
                     <div class="mb-4">
                         <label for="jam_selesai" class="block text-sm font-medium text-gray-700">Jam Selesai</label>
-                        <input type="time" id="edit_jam_selesai" name="jam_selesai" value="{{ $jurnal->jadwal->jam_selesai }}" class="w-full px-3 py-2 border rounded bg-gray-100" readonly>
+                        <input type="time" id="edit_jam_selesai" name="jam_selesai" class="w-full px-3 py-2 border rounded bg-gray-100" readonly>
                     </div>
 
                     <!-- Rencana -->

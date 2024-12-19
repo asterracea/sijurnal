@@ -244,37 +244,21 @@ class GuruController extends Controller
 
     public function updatejurnalpiket(Request $request, $id_jurnal)
 {
-    // Menemukan jurnal berdasarkan ID
-    $jurnal = Jurnal::findOrFail($id_jurnal);
-
-    // Validasi data yang diterima dari form
+    // Validasi data
     $validatedData = $request->validate([
-        'hari' => 'required|string',
-        'tanggal' => 'required|date',
-        'jam_mulai' => 'required',
-        'jam_selesai' => 'required',
-        'rencana' => 'required|string',
-        'realisasi' => 'required|string',
-        'foto' => 'nullable|image|max:1024',
+        'status' => 'required|string|in:pending,succes',
+        'nip' => 'nullable|exists:tb_piket,nip', // Validasi keberadaan NIP
     ]);
 
-    // Cek apakah ada file foto yang di-upload
-    if ($request->hasFile('foto')) {
-        // Proses upload dan simpan path foto
-        $filePath = $request->file('foto')->store('uploads', 'public');
-        $validatedData['foto'] = $filePath; // Simpan path foto yang baru
-    }
+    // Cari jurnal berdasarkan ID
+    $jurnal = Jurnal::findOrFail($id_jurnal);
 
-    // Hanya update jurnal jika statusnya 'pending'
-    if ($jurnal->status === 'pending') {
-        // Ubah status menjadi 'success'
-        $jurnal->status = 'success';
-    }
+    // Update jurnal dengan status dan nip jika ada
+    $jurnal->update([
+        'status' => $validatedData['status'],
+        'id_piket' => $request->input('nip') ? GuruPiket::where('nip', $validatedData['nip'])->first()->id_piket : $jurnal->id_piket,
+    ]);
 
-    // Simpan perubahan data jurnal
-    $jurnal->update($validatedData);
-
-    // Redirect kembali dengan pesan sukses
     return redirect()->back()->with('success', 'Jurnal berhasil diperbarui');
 }
 

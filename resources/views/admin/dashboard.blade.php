@@ -85,6 +85,7 @@
                 <th class="px-2 sm:px-4 py-2 border">Realisasi</th>
                 <th class="px-2 sm:px-4 py-2 border">Kelas</th>
                 <th class="px-2 sm:px-4 py-2 border">Mata Pelajaran</th>
+                <th class="px-2 sm:px-4 py-2 border">Guru Piket</th>
             </tr>
         </thead>
         <tbody>
@@ -98,7 +99,10 @@
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->realisasi }}</td>
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->jadwal->kelas->nama_kelas ?? 'Tidak tersedia' }}</td>
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->jadwal->mapel->nama_mapel ?? 'Tidak tersedia' }}</td>
-                </tr>
+                    <td class="px-2 sm:px-4 py-2 border text-gray-700">
+                        {{ $jurnals->piket->guru->nama_guru ?? 'Tidak tersedia' }}
+                    </td>
+                 </tr>
             @empty
                 <tr>
                     <td colspan="8" class="text-center px-2 sm:px-4 py-2 border text-gray-500">Data jurnal tidak ditemukan.</td>
