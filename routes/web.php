@@ -18,7 +18,7 @@ use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\DataGuruController;
 
 Route::get('/', function () {
-    return Auth::check() ? view('home') : redirect('/login');
+    return redirect('/login');
 });
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login'); // Menampilkan form login
 Route::post('/login', [AuthController::class, 'login']); // Proses login
@@ -110,7 +110,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Jurnal
         Route::get('/jurnal', [AdminController::class, 'viewjurnal'])->name('datajurnal');
-
+        
         // Akun Pengguna
         //Route::get('/account_user', [AccUserController::class, 'index'])->name('account_user');
         //Route::get('/jurnal', [AdminController::class, 'viewjurnal'])->name('datajurnal');
@@ -138,6 +138,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jadwalguru', [GuruController::class, 'viewjadwal'])->name('guru/jadwalguru');
         Route::get('/jurnal/edit/{id_jurnal}', [GuruController::class, 'edit'])->name('guru.editjurnal');
         Route::put('/jurnal/update/{id_jurnal}', [GuruController::class, 'update'])->name('guru.updatejurnal');
+
+        Route::get('/check-jurnal', [GuruController::class, 'checkAndCreateJurnal']);
 
     });
 
