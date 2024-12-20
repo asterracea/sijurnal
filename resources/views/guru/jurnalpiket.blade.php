@@ -123,7 +123,7 @@
 
                     <div class="mb-2">
                         <label for="edit_nip" class="text-sm font-medium text-gray-700">Guru Piket</label>
-                        <input type="text" id="edit_nip" name="nip" class="w-full p-2 border rounded-lg mt-1 bg-gray-100" readonly value="{{ Auth::user()->nip }}">
+                        <input type="text" id="edit_nip" name="nip" class="w-full p-2 border rounded-lg mt-1 bg-gray-100" value="{{ Auth::user()->nip }}">
                     </div>
 
                 </div>

@@ -22,16 +22,22 @@ class AdminController extends Controller
     $tahun = Tahun::all();
     $kelas = Kelas::all();
     $mapel = Mapel::all();
-    $jadwal = Jadwal::all();
+    $jadwal = Jadwal::with(['guru', 'tahun', 'kelas', 'mapel'])
+            ->whereHas('kelas', function ($query) {
+                $query->where('nama_kelas', 'like', '10%')
+                    ->orWhere('nama_kelas', 'like', '11%')
+                    ->orWhere('nama_kelas', 'like', '12%');
+            })
+            ->get();
     $jurnal = Jurnal::with(['piket.guru', 'jadwal.kelas', 'jadwal.mapel'])->get();
     $user = Auth::user();
     $accountname = $user->profile;
     $tahun = Tahun::where('status', 'Aktif')->first();
     $semester = $tahun ? $tahun->semester : 'Tidak ada';
-    $guruCount = User::where('role', 'guru')->count(); // Jumlah guru
+    $guruCount = User::where('role', 'guru')->count();
     $guruPiketCount = GuruPiket::where('id_tahun', $tahun->id_tahun ?? null)->count();
 
-    return view('admin.dashboard', compact('user', 'accountname', 'tahun', 'semester', 'guruCount', 'guruPiketCount', 'jurnal'));
+    return view('admin.dashboard', compact('user', 'accountname', 'tahun', 'semester', 'guruCount', 'jadwal', 'guruPiketCount', 'jurnal'));
 }
 
     public function datapiket(){
@@ -101,20 +107,20 @@ public function updatepiket(Request $request, $id)
     }
     public function edit($id_user)
     {
-        //$user = User::findOrFail($id_user);
+        // Ambil data user berdasarkan ID
         $user = User::find($id_user);
 
-        // Mengambil semua role dan status yang unik
-        //$roles = User::distinct()->pluck('role'); // Mengambil semua role unik
-        $roles = ['superadmin', 'admin', 'guru', 'guru_piket'];
-        //$statuses = User::distinct()->pluck('status'); // Mengambil semua status unik
+        // Ambil semua status yang ada, misalnya 'Aktif' dan 'NonAktif'
         $statuses = ['Aktif', 'NonAktif'];
-        // Mengirim data ke view
-        return view('admin.datauser', compact('user', 'roles', 'statuses'));
+        dd($statuses);
+
+        // Kirim data user dan opsi status ke view
+        return view('admin.datauser', compact('user', 'statuses'));
     }
 
     public function update(Request $request, $id_user)
     {
+        // Cari data user berdasarkan id_user
         $user = User::findOrFail($id_user);
 
         // Validasi input
@@ -130,8 +136,8 @@ public function updatepiket(Request $request, $id)
         $user->nip = $request->nip;
         $user->email = $request->email;
 
-        // Cek apakah password diubah, lakukan hashing
-        if ($request->password) {
+        // Update password hanya jika diisi
+        if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
 

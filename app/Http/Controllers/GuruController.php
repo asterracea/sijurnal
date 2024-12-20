@@ -183,6 +183,13 @@ class GuruController extends Controller
             $fotoPath = $file->storeAs('foto', $filename, 'public');
         }
 
+        $existingData = Tahun::where('id_jadwal', $validatedData['id_jadwal'])
+        ->first();
+
+    if ($existingData) {
+        return redirect()->back()->withErrors(['error' => 'Data jurnal yang sama sudah ada.']);
+    }
+
         // Simpan data ke database
         Jurnal::create([
             'nip' => $nip,

@@ -72,16 +72,32 @@
     </div>
   </div>
 
+  <div class="flex items-center space-x-4 mb-4">
+    <!-- Dropdown Filter untuk Kelas -->
+    <select id="filterKelas" onchange="filterData()" class="border border-gray-300 rounded px-8 py-2">
+        <option value="all">Semua Kelas</option>
+        <option value="10">Kelas 10</option>
+        <option value="11">Kelas 11</option>
+        <option value="12">Kelas 12</option>
+    </select>
+
+    {{-- <!-- Dropdown Filter untuk Status -->
+    <select id="filterStatus" onchange="filterData()" class="border border-gray-300 rounded px-8 py-2">
+        <option value="all">Semua Status</option>
+        <option value="Aktif">Aktif</option>
+        <option value="Tidak Aktif">Tidak Aktif</option>
+    </select> --}}
+</div>
 
   <div class="overflow-auto bg-white p-4 rounded-lg shadow-md">
-    <table class="table-auto w-full border border-gray-300 rounded-lg">
+    <table id="data-table" class="w-full">
         <thead>
             <tr class="bg-gray-100 text-sm sm:text-base">
                 <th class="px-2 sm:px-4 py-2 border">Nama Guru</th>
                 <th class="px-2 sm:px-4 py-2 border">Tanggal</th>
+                <th class="px-2 sm:px-4 py-2 border">Hari</th>
                 <th class="px-2 sm:px-4 py-2 border">Jam Mulai</th>
                 <th class="px-2 sm:px-4 py-2 border">Jam Selesai</th>
-                <th class="px-2 sm:px-4 py-2 border">Rencana</th>
                 <th class="px-2 sm:px-4 py-2 border">Realisasi</th>
                 <th class="px-2 sm:px-4 py-2 border">Kelas</th>
                 <th class="px-2 sm:px-4 py-2 border">Mata Pelajaran</th>
@@ -90,12 +106,12 @@
         </thead>
         <tbody>
             @forelse ($jurnal as $jurnals)
-                <tr>
+            <tr data-kelas="{{ substr($jurnals->jadwal->kelas->nama_kelas ?? '', 0, 2) }}" data-status="{{ $jurnals->status }}">
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->gurus->nama_guru }}</td>
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->tanggal }}</td>
+                    <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->hari }}</td>
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->jam_mulai }}</td>
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->jam_selesai }}</td>
-                    <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->rencana }}</td>
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->realisasi }}</td>
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->jadwal->kelas->nama_kelas ?? 'Tidak tersedia' }}</td>
                     <td class="px-2 sm:px-4 py-2 border text-gray-700">{{ $jurnals->jadwal->mapel->nama_mapel ?? 'Tidak tersedia' }}</td>
@@ -115,5 +131,28 @@
 </body>
 
 </html>
+
+<script>
+
+function filterData() {
+    const kelasFilter = document.getElementById('filterKelas').value;
+    // const statusFilter = document.getElementById('filterStatus').value;
+    const rows = document.querySelectorAll('#data-table tbody tr');
+
+    rows.forEach(row => {
+        const kelas = row.getAttribute('data-kelas');
+        // const status = row.getAttribute('data-status');
+        const kelasMatch = kelasFilter === 'all' || kelas === kelasFilter;
+        // const statusMatch = statusFilter === 'all' || status === statusFilter;
+
+        if (kelasMatch ) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+</script>
 @endsection
 
